@@ -24,7 +24,9 @@ class ProductRequest extends FormRequest
         $this->merge([
             'is_featured' => $this->has('is_featured'),
             'is_new' => $this->has('is_new'),
-            // Optionally handle arrays if they come as string (though normally they don't from standard inputs if properly structured)
+            'currency' => $this->input('currency', 'EUR'),
+            'status' => $this->input('status', 'draft'),
+            'stock_status' => $this->input('stock_status', 'in_stock'),
         ]);
     }
 
@@ -59,12 +61,12 @@ class ProductRequest extends FormRequest
             'caffeine_level' => ['nullable', 'string', 'max:255'],
             
             // Prix
-            'price' => ['nullable', 'numeric', 'min:0'],
+            'price' => ['required', 'numeric', 'min:0'],
             'compare_price' => ['nullable', 'numeric', 'min:0'],
-            'currency' => ['nullable', 'string', 'size:3'],
+            'currency' => ['required', 'string', 'size:3'],
             
             // Stock
-            'stock_status' => ['nullable', 'string', 'in:in_stock,out_of_stock,preorder'],
+            'stock_status' => ['required', 'string', 'in:in_stock,out_of_stock,preorder'],
             'stock_quantity' => ['nullable', 'integer', 'min:0'],
             
             // SEO
@@ -74,11 +76,16 @@ class ProductRequest extends FormRequest
             
             // Images
             'main_image' => ['nullable', 'image', 'max:2048'],
+            'main_image_alt' => ['nullable', 'string', 'max:255'],
             'remove_main_image' => ['nullable', 'boolean'],
             'og_image' => ['nullable', 'image', 'max:2048'],
             'remove_og_image' => ['nullable', 'boolean'],
             'gallery_images' => ['nullable', 'array'],
             'gallery_images.*' => ['image', 'max:2048'],
+            
+            // Media Updates
+            'media' => ['nullable', 'array'],
+            'media.*.alt_text' => ['nullable', 'string', 'max:255'],
         ];
     }
 }

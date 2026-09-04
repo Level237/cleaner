@@ -97,34 +97,68 @@
                     <h3 class="text-lg font-bold text-gray-900 mb-4">Images</h3>
                     
                     <div class="space-y-4">
-                        <div>
+                        <div class="p-4 bg-gray-50 rounded-xl border border-gray-100">
                             <label for="main_image" class="block text-sm font-medium text-gray-700">Image principale</label>
                             @if($product->primaryMedia)
-                                <div class="mt-2 mb-2 flex items-center space-x-4">
-                                    <img src="{{ Storage::url($product->primaryMedia->path) }}" alt="Image principale" class="h-24 w-24 rounded-lg object-cover">
-                                    <label class="inline-flex items-center text-sm text-red-600">
-                                        <input type="checkbox" name="remove_main_image" value="1" class="rounded border-gray-300 text-red-600 focus:ring-red-500 mr-2">
-                                        Supprimer l'image actuelle
-                                    </label>
+                                <div class="mt-2 mb-4">
+                                    <div class="relative group inline-block">
+                                        <img src="{{ Storage::url($product->primaryMedia->path) }}" alt="{{ $product->primaryMedia->alt_text }}" class="h-32 rounded-lg object-cover">
+                                        <label class="inline-flex items-center mt-2 text-sm">
+                                            <input type="checkbox" name="remove_main_image" value="1" class="rounded border-gray-300 text-red-600 focus:ring-red-500 mr-2">
+                                            Supprimer l'image actuelle
+                                        </label>
+                                    </div>
+                                    <div class="mt-3">
+                                        <label class="block text-sm font-medium text-gray-700">Texte alternatif (Alt)</label>
+                                        <input type="text" name="media[{{ $product->mainImage->first()->id }}][alt_text]" value="{{ old('media.' . $product->mainImage->first()->id . '.alt_text', $product->mainImage->first()->alt_text) }}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
+                                    </div>
                                 </div>
                             @endif
-                            <input type="file" name="main_image" id="main_image" accept="image/*" class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
+                            <input type="file" name="main_image" id="main_image" accept="image/*" class="mt-2 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
+                            
+                            @if(!$product->mainImage->first())
+                                <div class="mt-3">
+                                    <label for="main_image_alt" class="block text-sm font-medium text-gray-700">Texte alternatif (nouvelle image)</label>
+                                    <input type="text" name="main_image_alt" id="main_image_alt" value="{{ old('main_image_alt') }}" placeholder="Ex: Thé vert Sencha Premium Bio" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
+                                </div>
+                            @endif
                         </div>
                         
-                        <div class="pt-4 border-t border-gray-100">
+                        <div class="p-4 bg-gray-50 rounded-xl border border-gray-100">
                             <label for="gallery_images" class="block text-sm font-medium text-gray-700">Galerie d'images (ajouter)</label>
                             
                             @if($product->media->where('role', 'gallery')->count() > 0)
-                                <div class="mt-2 mb-4 grid grid-cols-4 gap-2">
+                                <div class="mt-3 mb-5 grid grid-cols-2 sm:grid-cols-4 gap-4">
                                     @foreach($product->media->where('role', 'gallery') as $media)
-                                        <div class="relative group">
-                                            <img src="{{ Storage::url($media->path) }}" alt="Galerie" class="h-20 w-full rounded-lg object-cover">
+                                        <div x-data="{ open: false }" class="relative group">
+                                            <img src="{{ Storage::url($media->path) }}" alt="{{ $media->alt_text }}" class="h-24 w-full rounded-lg object-cover border border-gray-200">
+                                            
+                                            <!-- Edit button -->
+                                            <button @click.prevent="open = true" type="button" class="absolute top-1 right-1 bg-white/90 p-1.5 rounded-md text-gray-700 hover:text-blue-600 hover:bg-white shadow-sm opacity-0 group-hover:opacity-100 transition-opacity" title="Modifier le texte alternatif">
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
+                                            </button>
+
+                                            <!-- Alpine Modal for Alt Text Edit -->
+                                            <div x-show="open" class="fixed inset-0 z-50 flex items-center justify-center bg-gray-900/50" style="display: none;">
+                                                <div @click.away="open = false" class="bg-white rounded-xl shadow-xl p-6 w-96 max-w-full mx-4">
+                                                    <h4 class="text-lg font-semibold mb-4">Attributs de l'image</h4>
+                                                    <div class="mb-4">
+                                                        <img src="{{ Storage::url($media->path) }}" class="h-40 w-full object-cover rounded-lg mb-3 border border-gray-200">
+                                                        <label class="block text-sm font-medium text-gray-700 mb-1">Texte alternatif (Alt)</label>
+                                                        <input type="text" name="media[{{ $media->id }}][alt_text]" value="{{ old('media.' . $media->id . '.alt_text', $media->alt_text) }}" class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
+                                                        <p class="text-xs text-gray-500 mt-1">Important pour le SEO et l'accessibilité.</p>
+                                                    </div>
+                                                    <div class="flex justify-end space-x-3">
+                                                        <button @click.prevent="open = false" type="button" class="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-medium hover:bg-blue-700">OK</button>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     @endforeach
                                 </div>
                             @endif
 
-                            <input type="file" name="gallery_images[]" id="gallery_images" accept="image/*" multiple class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-gray-50 file:text-gray-700 hover:file:bg-gray-100">
+                            <input type="file" name="gallery_images[]" id="gallery_images" accept="image/*" multiple class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-white file:text-gray-700 hover:file:bg-gray-50">
                         </div>
                     </div>
                 </div>
@@ -141,6 +175,19 @@
                         <div>
                             <label for="seo_description" class="block text-sm font-medium text-gray-700">Description SEO</label>
                             <textarea name="seo_description" id="seo_description" rows="2" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">{{ old('seo_description', $product->seo_description) }}</textarea>
+                        </div>
+                        <div>
+                            <label for="canonical_url" class="block text-sm font-medium text-gray-700">URL Canonique</label>
+                            <input type="url" name="canonical_url" id="canonical_url" value="{{ old('canonical_url', $product->canonical_url) }}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
+                        </div>
+                        <div>
+                            <label for="og_image" class="block text-sm font-medium text-gray-700">Image de partage (OG Image)</label>
+                            @if($product->og_image_path)
+                                <div class="mt-2 mb-2">
+                                    <img src="{{ Storage::url($product->og_image_path) }}" alt="OG Image" class="h-20 rounded-lg object-cover">
+                                </div>
+                            @endif
+                            <input type="file" name="og_image" id="og_image" accept="image/*" class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
                         </div>
                     </div>
                 </div>

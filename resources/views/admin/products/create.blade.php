@@ -93,13 +93,21 @@
                     <h3 class="text-lg font-bold text-gray-900 mb-4">Images</h3>
                     
                     <div class="space-y-4">
-                        <div>
+                        <div class="p-4 bg-gray-50 rounded-xl border border-gray-100">
                             <label for="main_image" class="block text-sm font-medium text-gray-700">Image principale</label>
-                            <input type="file" name="main_image" id="main_image" accept="image/*" class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
+                            <input type="file" name="main_image" id="main_image" accept="image/*" class="mt-2 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
+                            
+                            <div class="mt-4">
+                                <label for="main_image_alt" class="block text-sm font-medium text-gray-700">Texte alternatif (Alt)</label>
+                                <input type="text" name="main_image_alt" id="main_image_alt" value="{{ old('main_image_alt') }}" placeholder="Ex: Thé vert Sencha Premium Bio" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
+                                <p class="mt-1 text-xs text-gray-500">Améliore le SEO et l'accessibilité.</p>
+                            </div>
                         </div>
-                        <div>
+                        
+                        <div class="p-4 bg-gray-50 rounded-xl border border-gray-100">
                             <label for="gallery_images" class="block text-sm font-medium text-gray-700">Galerie d'images (multiples)</label>
-                            <input type="file" name="gallery_images[]" id="gallery_images" accept="image/*" multiple class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-gray-50 file:text-gray-700 hover:file:bg-gray-100">
+                            <input type="file" name="gallery_images[]" id="gallery_images" accept="image/*" multiple class="mt-2 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-white file:text-gray-700 hover:file:bg-gray-50">
+                            <p class="mt-2 text-xs text-gray-500">Vous pourrez définir les textes alternatifs (Alt) de chaque image de la galerie une fois le produit créé, depuis la page de modification.</p>
                         </div>
                     </div>
                 </div>
@@ -116,6 +124,14 @@
                         <div>
                             <label for="seo_description" class="block text-sm font-medium text-gray-700">Description SEO</label>
                             <textarea name="seo_description" id="seo_description" rows="2" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">{{ old('seo_description') }}</textarea>
+                        </div>
+                        <div>
+                            <label for="canonical_url" class="block text-sm font-medium text-gray-700">URL Canonique</label>
+                            <input type="url" name="canonical_url" id="canonical_url" value="{{ old('canonical_url') }}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
+                        </div>
+                        <div>
+                            <label for="og_image" class="block text-sm font-medium text-gray-700">Image de partage (OG Image)</label>
+                            <input type="file" name="og_image" id="og_image" accept="image/*" class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
                         </div>
                     </div>
                 </div>
@@ -168,20 +184,22 @@
                             <label for="price" class="block text-sm font-medium text-gray-700">Prix unitaire</label>
                             <div class="mt-1 relative rounded-md shadow-sm">
                                 <input type="number" step="0.01" name="price" id="price" value="{{ old('price') }}" class="block w-full rounded-md border-gray-300 pl-3 pr-12 focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
-                                <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
-                                    <span class="text-gray-500 sm:text-sm">€</span>
+                                <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                                    <span class="text-gray-500 sm:text-sm">EUR</span>
                                 </div>
                             </div>
+                            @error('price') <p class="mt-1 text-sm text-red-600">{{ $message }}</p> @enderror
                         </div>
 
                         <div>
                             <label for="compare_price" class="block text-sm font-medium text-gray-700">Prix barré (comparaison)</label>
                             <div class="mt-1 relative rounded-md shadow-sm">
                                 <input type="number" step="0.01" name="compare_price" id="compare_price" value="{{ old('compare_price') }}" class="block w-full rounded-md border-gray-300 pl-3 pr-12 focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
-                                <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
-                                    <span class="text-gray-500 sm:text-sm">€</span>
+                                <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                                    <span class="text-gray-500 sm:text-sm">EUR</span>
                                 </div>
                             </div>
+                            @error('compare_price') <p class="mt-1 text-sm text-red-600">{{ $message }}</p> @enderror
                         </div>
 
                         <div>

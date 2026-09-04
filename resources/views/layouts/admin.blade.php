@@ -84,6 +84,14 @@
                     Utilisateurs
                 </a>
 
+                <!-- Archives -->
+                <a href="{{ route('admin.archives.index') }}" class="flex items-center px-3 py-3 text-base font-semibold rounded-xl {{ request()->routeIs('admin.archives.*') ? 'bg-blue-50 text-blue-700' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900' }} transition-all group">
+                    <svg class="w-6 h-6 mr-3 flex-shrink-0 {{ request()->routeIs('admin.archives.*') ? 'text-blue-600' : 'text-gray-400 group-hover:text-gray-600' }} transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"></path>
+                    </svg>
+                    Archives
+                </a>
+
                 <!-- Paramètres -->
                 <a href="#" class="flex items-center px-3 py-2.5 text-sm font-medium rounded-xl text-gray-600 hover:bg-gray-50 hover:text-gray-900 transition-all group">
                     <svg class="w-5 h-5 mr-3 flex-shrink-0 text-gray-400 group-hover:text-gray-600 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -170,6 +178,16 @@
                 @if (session('error'))
                     <div class="mb-4 bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-xl relative" role="alert">
                         <span class="block sm:inline">{{ session('error') }}</span>
+                    </div>
+                @endif
+                @if ($errors->any())
+                    <div class="mb-4 bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-xl relative" role="alert">
+                        <div class="font-bold mb-1">Veuillez corriger les erreurs suivantes :</div>
+                        <ul class="list-disc list-inside text-sm">
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
                     </div>
                 @endif
 

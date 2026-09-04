@@ -93,11 +93,6 @@ class CollectionController extends Controller
 
     public function destroy(Collection $collection)
     {
-        if ($collection->og_image_path) {
-            Storage::disk('public')->delete($collection->og_image_path);
-        }
-
-        $collection->products()->detach();
         $collection->delete();
 
         return redirect()

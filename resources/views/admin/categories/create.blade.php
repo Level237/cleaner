@@ -100,6 +100,14 @@
                     <label for="canonical_url" class="block text-sm font-medium text-gray-700">URL Canonique</label>
                     <input type="url" name="canonical_url" id="canonical_url" value="{{ old('canonical_url') }}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
                 </div>
+
+                <!-- OG Image -->
+                <div>
+                    <label for="og_image" class="block text-sm font-medium text-gray-700">Image de partage (OG Image)</label>
+                    <input type="file" name="og_image" id="og_image" accept="image/*" class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
+                    <p class="mt-1 text-xs text-gray-500">Image optimisée pour le partage sur les réseaux sociaux (1200x630px recommandé).</p>
+                    @error('og_image') <p class="mt-1 text-sm text-red-600">{{ $message }}</p> @enderror
+                </div>
             </div>
         </div>
 

@@ -58,6 +58,7 @@ class ProductController extends Controller
             $product->media()->create([
                 'path' => $path,
                 'role' => 'image',
+                'alt_text' => $request->input('main_image_alt'),
                 'is_primary' => true,
                 'sort_order' => 0,
             ]);
@@ -130,6 +131,7 @@ class ProductController extends Controller
             $product->media()->create([
                 'path' => $path,
                 'role' => 'image',
+                'alt_text' => $request->input('main_image_alt'),
                 'is_primary' => true,
                 'sort_order' => 0,
             ]);
@@ -169,6 +171,17 @@ class ProductController extends Controller
             }
         }
 
+        // Media Alt Text Updates
+        if ($request->has('media') && is_array($request->media)) {
+            foreach ($request->media as $mediaId => $mediaData) {
+                if (isset($mediaData['alt_text'])) {
+                    $product->media()->where('id', $mediaId)->update([
+                        'alt_text' => $mediaData['alt_text']
+                    ]);
+                }
+            }
+        }
+
         return redirect()
             ->route('admin.products.index')
             ->with('success', 'Produit modifié avec succès.');
@@ -176,15 +189,6 @@ class ProductController extends Controller
 
     public function destroy(Product $product)
     {
-        if ($product->og_image_path) {
-            Storage::disk('public')->delete($product->og_image_path);
-        }
-
-        foreach ($product->media as $media) {
-            Storage::disk('public')->delete($media->path);
-        }
-        
-        $product->media()->delete();
         $product->delete();
 
         return redirect()

@@ -101,15 +101,6 @@ class CategoryController extends Controller
 
     public function destroy(Category $category)
     {
-        // Supprime les images physiques
-        if ($category->image_path) {
-            Storage::disk('public')->delete($category->image_path);
-        }
-        
-        if ($category->og_image_path) {
-            Storage::disk('public')->delete($category->og_image_path);
-        }
-
         $category->delete();
 
         return redirect()
