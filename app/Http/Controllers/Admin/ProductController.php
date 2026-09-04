@@ -82,7 +82,7 @@ class ProductController extends Controller
                 $product->media()->create([
                     'path' => $path,
                     'role' => 'gallery',
-                    'alt_text' => $product->name . ' - Galerie ' . ($index + 1),
+                    'alt_text' => $request->input("gallery_images_alt.{$index}"),
                     'is_primary' => false,
                     'sort_order' => $index + 1,
                 ]);
@@ -108,7 +108,7 @@ class ProductController extends Controller
         $data = $request->validated();
         $collections = $request->input('collections', []);
 
-        unset($data['main_image'], $data['og_image'], $data['remove_main_image'], $data['remove_og_image'], $data['collections'], $data['gallery_images']);
+        unset($data['main_image'], $data['og_image'], $data['remove_main_image'], $data['remove_og_image'], $data['collections'], $data['gallery_images'], $data['media']);
 
         $product->update($data);
 
@@ -134,6 +134,11 @@ class ProductController extends Controller
                 'alt_text' => $request->input('main_image_alt'),
                 'is_primary' => true,
                 'sort_order' => 0,
+            ]);
+        } elseif ($product->primaryMedia && $request->has('main_image_alt')) {
+            // Update existing main image alt text
+            $product->primaryMedia->update([
+                'alt_text' => $request->input('main_image_alt')
             ]);
         }
 
@@ -164,7 +169,7 @@ class ProductController extends Controller
                 $product->media()->create([
                     'path' => $path,
                     'role' => 'gallery',
-                    'alt_text' => $product->name . ' - Galerie',
+                    'alt_text' => $request->input("gallery_images_alt.{$index}"),
                     'is_primary' => false,
                     'sort_order' => $lastOrder + $index + 1,
                 ]);
@@ -172,9 +177,10 @@ class ProductController extends Controller
         }
 
         // Media Alt Text Updates
-        if ($request->has('media') && is_array($request->media)) {
-            foreach ($request->media as $mediaId => $mediaData) {
-                if (isset($mediaData['alt_text'])) {
+        $mediaUpdates = $request->input('media', []);
+        if (is_array($mediaUpdates)) {
+            foreach ($mediaUpdates as $mediaId => $mediaData) {
+                if (is_array($mediaData) && array_key_exists('alt_text', $mediaData)) {
                     $product->media()->where('id', $mediaId)->update([
                         'alt_text' => $mediaData['alt_text']
                     ]);

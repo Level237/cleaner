@@ -93,22 +93,55 @@
                     <h3 class="text-lg font-bold text-gray-900 mb-4">Images</h3>
                     
                     <div class="space-y-4">
-                        <div class="p-4 bg-gray-50 rounded-xl border border-gray-100">
+                        <div class="p-4 bg-gray-50 rounded-xl border border-gray-100" x-data="{ imageUrl: null }">
                             <label for="main_image" class="block text-sm font-medium text-gray-700">Image principale</label>
-                            <input type="file" name="main_image" id="main_image" accept="image/*" class="mt-2 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
+                            <input type="file" name="main_image" id="main_image" accept="image/*" @change="imageUrl = URL.createObjectURL($event.target.files[0])" class="mt-2 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
                             
-                            <div class="mt-4">
+                            <!-- Preview & Alt Text -->
+                            <div class="mt-4 bg-white p-4 rounded-xl border border-gray-200 shadow-sm" x-show="imageUrl" style="display: none;">
+                                <img :src="imageUrl" class="h-48 w-full object-cover rounded-lg mb-4 border border-gray-100">
                                 <label for="main_image_alt" class="block text-sm font-medium text-gray-700">Texte alternatif (Alt)</label>
                                 <input type="text" name="main_image_alt" id="main_image_alt" value="{{ old('main_image_alt') }}" placeholder="Ex: Thé vert Sencha Premium Bio" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
-                                <p class="mt-1 text-xs text-gray-500">Améliore le SEO et l'accessibilité.</p>
+                                <p class="mt-1 text-xs text-gray-500">Décrivez l'image pour le SEO et l'accessibilité.</p>
                             </div>
                         </div>
                         
-                        <div class="p-4 bg-gray-50 rounded-xl border border-gray-100">
+                        <div class="p-4 bg-gray-50 rounded-xl border border-gray-100" x-data="galleryUpload()">
                             <label for="gallery_images" class="block text-sm font-medium text-gray-700">Galerie d'images (multiples)</label>
-                            <input type="file" name="gallery_images[]" id="gallery_images" accept="image/*" multiple class="mt-2 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-white file:text-gray-700 hover:file:bg-gray-50">
-                            <p class="mt-2 text-xs text-gray-500">Vous pourrez définir les textes alternatifs (Alt) de chaque image de la galerie une fois le produit créé, depuis la page de modification.</p>
+                            <input type="file" name="gallery_images[]" id="gallery_images" accept="image/*" multiple @change="handleFileChange" class="mt-2 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-white file:text-gray-700 hover:file:bg-gray-50">
+                            
+                            <!-- Dynamic Previews for Alt Text -->
+                            <div class="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-4" x-show="files.length > 0" style="display: none;">
+                                <template x-for="(file, index) in files" :key="index">
+                                    <div class="bg-white p-3 rounded-lg border border-gray-200 shadow-sm flex flex-col">
+                                        <img :src="file.url" class="h-32 w-full object-cover rounded-md mb-2 border border-gray-100">
+                                        <label class="text-xs font-medium text-gray-700 mb-1">Texte alternatif (Alt)</label>
+                                        <input type="text" :name="'gallery_images_alt[' + index + ']'" class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm" placeholder="Description de l'image...">
+                                    </div>
+                                </template>
+                            </div>
                         </div>
+
+                        <!-- Alpine Component Script for Gallery -->
+                        <script>
+                            document.addEventListener('alpine:init', () => {
+                                Alpine.data('galleryUpload', () => ({
+                                    files: [],
+                                    handleFileChange(event) {
+                                        this.files.forEach(f => URL.revokeObjectURL(f.url));
+                                        this.files = [];
+                                        
+                                        const selectedFiles = event.target.files;
+                                        for (let i = 0; i < selectedFiles.length; i++) {
+                                            this.files.push({
+                                                name: selectedFiles[i].name,
+                                                url: URL.createObjectURL(selectedFiles[i])
+                                            });
+                                        }
+                                    }
+                                }))
+                            })
+                        </script>
                     </div>
                 </div>
 

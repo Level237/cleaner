@@ -97,10 +97,11 @@
                     <h3 class="text-lg font-bold text-gray-900 mb-4">Images</h3>
                     
                     <div class="space-y-4">
-                        <div class="p-4 bg-gray-50 rounded-xl border border-gray-100">
+                        <div class="p-4 bg-gray-50 rounded-xl border border-gray-100" x-data="{ imageUrl: null }">
                             <label for="main_image" class="block text-sm font-medium text-gray-700">Image principale</label>
+                            
                             @if($product->primaryMedia)
-                                <div class="mt-2 mb-4">
+                                <div class="mt-2 mb-4" x-show="!imageUrl">
                                     <div class="relative group inline-block">
                                         <img src="{{ Storage::url($product->primaryMedia->path) }}" alt="{{ $product->primaryMedia->alt_text }}" class="h-32 rounded-lg object-cover">
                                         <label class="inline-flex items-center mt-2 text-sm">
@@ -108,24 +109,25 @@
                                             Supprimer l'image actuelle
                                         </label>
                                     </div>
-                                    <div class="mt-3">
-                                        <label class="block text-sm font-medium text-gray-700">Texte alternatif (Alt)</label>
-                                        <input type="text" name="media[{{ $product->mainImage->first()->id }}][alt_text]" value="{{ old('media.' . $product->mainImage->first()->id . '.alt_text', $product->mainImage->first()->alt_text) }}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
-                                    </div>
                                 </div>
                             @endif
-                            <input type="file" name="main_image" id="main_image" accept="image/*" class="mt-2 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
+
+                            <input type="file" name="main_image" id="main_image" accept="image/*" @change="imageUrl = URL.createObjectURL($event.target.files[0])" class="mt-2 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
                             
-                            @if(!$product->mainImage->first())
-                                <div class="mt-3">
-                                    <label for="main_image_alt" class="block text-sm font-medium text-gray-700">Texte alternatif (nouvelle image)</label>
-                                    <input type="text" name="main_image_alt" id="main_image_alt" value="{{ old('main_image_alt') }}" placeholder="Ex: Thé vert Sencha Premium Bio" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
-                                </div>
-                            @endif
+                            <!-- Dynamic Preview for new upload -->
+                            <div class="mt-4 mb-4" x-show="imageUrl" style="display: none;">
+                                <img :src="imageUrl" class="h-32 rounded-lg object-cover border border-gray-200">
+                                <span class="block text-xs text-blue-600 mt-1 font-medium">Nouvelle image sélectionnée</span>
+                            </div>
+
+                            <div class="mt-3">
+                                <label class="block text-sm font-medium text-gray-700">Texte alternatif (Alt)</label>
+                                <input type="text" name="main_image_alt" value="{{ old('main_image_alt', $product->primaryMedia ? $product->primaryMedia->alt_text : '') }}" placeholder="Ex: Thé vert Sencha Premium Bio" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
+                            </div>
                         </div>
                         
-                        <div class="p-4 bg-gray-50 rounded-xl border border-gray-100">
-                            <label for="gallery_images" class="block text-sm font-medium text-gray-700">Galerie d'images (ajouter)</label>
+                        <div class="p-4 bg-gray-50 rounded-xl border border-gray-100" x-data="galleryUpload()">
+                            <label for="gallery_images" class="block text-sm font-medium text-gray-700">Galerie d'images (ajouter de nouvelles images)</label>
                             
                             @if($product->media->where('role', 'gallery')->count() > 0)
                                 <div class="mt-3 mb-5 grid grid-cols-2 sm:grid-cols-4 gap-4">
@@ -148,8 +150,9 @@
                                                         <input type="text" name="media[{{ $media->id }}][alt_text]" value="{{ old('media.' . $media->id . '.alt_text', $media->alt_text) }}" class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
                                                         <p class="text-xs text-gray-500 mt-1">Important pour le SEO et l'accessibilité.</p>
                                                     </div>
-                                                    <div class="flex justify-end space-x-3">
-                                                        <button @click.prevent="open = false" type="button" class="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-medium hover:bg-blue-700">OK</button>
+                                                    <div class="flex items-center justify-between mt-6">
+                                                        <span class="text-xs text-orange-600 font-medium">N'oubliez pas d'enregistrer le produit en bas de page.</span>
+                                                        <button @click.prevent="open = false" type="button" class="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg text-sm font-medium hover:bg-gray-200">Fermer</button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -158,8 +161,40 @@
                                 </div>
                             @endif
 
-                            <input type="file" name="gallery_images[]" id="gallery_images" accept="image/*" multiple class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-white file:text-gray-700 hover:file:bg-gray-50">
+                            <input type="file" name="gallery_images[]" id="gallery_images" accept="image/*" multiple @change="handleFileChange" class="mt-4 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-white file:text-gray-700 hover:file:bg-gray-50">
+                            
+                            <!-- Dynamic Previews for New Gallery Images -->
+                            <div class="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-4" x-show="files.length > 0" style="display: none;">
+                                <template x-for="(file, index) in files" :key="index">
+                                    <div class="bg-white p-3 rounded-lg border border-gray-200 shadow-sm flex flex-col">
+                                        <img :src="file.url" class="h-32 w-full object-cover rounded-md mb-2 border border-gray-100">
+                                        <label class="text-xs font-medium text-gray-700 mb-1">Texte alternatif (Alt)</label>
+                                        <input type="text" :name="'gallery_images_alt[' + index + ']'" class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm" placeholder="Description de l'image...">
+                                    </div>
+                                </template>
+                            </div>
                         </div>
+
+                        <!-- Alpine Component Script for Gallery -->
+                        <script>
+                            document.addEventListener('alpine:init', () => {
+                                Alpine.data('galleryUpload', () => ({
+                                    files: [],
+                                    handleFileChange(event) {
+                                        this.files.forEach(f => URL.revokeObjectURL(f.url));
+                                        this.files = [];
+                                        
+                                        const selectedFiles = event.target.files;
+                                        for (let i = 0; i < selectedFiles.length; i++) {
+                                            this.files.push({
+                                                name: selectedFiles[i].name,
+                                                url: URL.createObjectURL(selectedFiles[i])
+                                            });
+                                        }
+                                    }
+                                }))
+                            })
+                        </script>
                     </div>
                 </div>
 
