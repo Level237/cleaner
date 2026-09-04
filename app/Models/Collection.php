@@ -2,22 +2,18 @@
 
 namespace App\Models;
 
-use App\Models\Category;
-use App\Models\Media;
-use App\Models\Product;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Category extends Model
+class Collection extends Model
 {
-       use HasFactory, SoftDeletes;
+     use HasFactory, SoftDeletes;
 
     protected $fillable = [
-        'parent_id',
         'name',
         'slug',
         'description',
@@ -45,31 +41,30 @@ class Category extends Model
     }
 
     /**
-     * Catégorie parente.
+     * Produits de la collection.
      */
-    public function parent(): BelongsTo
+    public function products(): BelongsToMany
     {
-        return $this->belongsTo(Category::class, 'parent_id');
+        return $this->belongsToMany(Product::class, 'collection_product')
+            ->withPivot([
+                'position',
+                'is_featured',
+            ])
+            ->withTimestamps()
+            ->orderByPivot('position');
     }
 
     /**
-     * Catégories enfants.
+     * Produits mis en avant dans la collection.
      */
-    public function children(): HasMany
+    public function featuredProducts(): BelongsToMany
     {
-        return $this->hasMany(Category::class, 'parent_id');
+        return $this->products()
+            ->wherePivot('is_featured', true);
     }
 
     /**
-     * Produits dont cette catégorie est la catégorie principale.
-     */
-    public function products(): HasMany
-    {
-        return $this->hasMany(Product::class, 'primary_category_id');
-    }
-
-    /**
-     * Images de la catégorie.
+     * Images de la collection.
      */
     public function media(): MorphMany
     {
@@ -87,9 +82,9 @@ class Category extends Model
     }
 
     /**
-     * Scope catégories visibles.
+     * Collections visibles.
      */
-    public function scopeVisible($query)
+    public function scopeVisible(Builder $query): Builder
     {
         return $query->where('is_visible', true);
     }
