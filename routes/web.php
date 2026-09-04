@@ -11,6 +11,8 @@ Route::get('/', function () {
 
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\Admin\ProductVariantController;
+use App\Http\Controllers\Admin\CollectionController;
 
 Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', function () {
@@ -19,6 +21,8 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
 
     Route::resource('categories', CategoryController::class)->except(['show']);
     Route::resource('products', ProductController::class)->except(['show']);
+    Route::resource('products.variants', ProductVariantController::class)->except(['show']);
+    Route::resource('collections', CollectionController::class)->except(['show']);
 });
 
 Route::middleware('auth')->group(function () {
