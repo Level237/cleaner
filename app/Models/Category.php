@@ -23,6 +23,8 @@ class Category extends Model
         'description',
         'is_visible',
         'position',
+        'image_path',
+        'image_alt',
         'seo_title',
         'seo_description',
         'canonical_url',
