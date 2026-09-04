@@ -3,24 +3,22 @@
 @section('title', 'Variantes : ' . $product->name)
 
 @section('header')
-    <div class="flex items-center space-x-2">
-        <a href="{{ route('admin.products.index') }}" class="text-blue-600 hover:text-blue-800">Produits</a>
-        <span class="text-gray-400">/</span>
-        <a href="{{ route('admin.products.edit', $product) }}" class="text-blue-600 hover:text-blue-800">{{ Str::limit($product->name, 30) }}</a>
-        <span class="text-gray-400">/</span>
-        <span class="text-gray-800">Variantes</span>
+    <div class="flex items-center space-x-3 mb-2">
+        <a href="{{ route('admin.products.edit', $product) }}" class="text-blue-600 hover:text-blue-800 text-sm font-medium">&larr; Retour au produit</a>
+    </div>
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-center w-full gap-4">
+        <div>
+            <h2 class="text-3xl font-bold text-gray-900 tracking-tight">Variantes : {{ $product->name }}</h2>
+            <p class="text-sm text-gray-500 mt-1">Gérez les différentes options d'achat (poids, emballage) pour ce produit.</p>
+        </div>
+        <a href="{{ route('admin.products.variants.create', $product) }}" class="inline-flex items-center px-5 py-2.5 bg-blue-600 border border-transparent rounded-xl font-semibold text-sm text-white tracking-wide hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition ease-in-out duration-150 shadow-sm">
+            Ajouter une variante
+        </a>
     </div>
 @endsection
 
 @section('content')
-<div class="max-w-7xl mx-auto">
-    <div class="flex flex-col sm:flex-row justify-between items-center mb-6">
-        <h3 class="text-lg font-bold text-gray-900 mb-4 sm:mb-0">Variantes du produit</h3>
-        <a href="{{ route('admin.products.variants.create', $product) }}" class="inline-flex items-center px-4 py-2 bg-blue-600 border border-transparent rounded-xl font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition ease-in-out duration-150">
-            Ajouter une variante
-        </a>
-    </div>
-
+<div class="w-full">
     <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
         <div class="overflow-x-auto">
             <table class="min-w-full divide-y divide-gray-200">

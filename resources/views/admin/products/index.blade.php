@@ -2,17 +2,17 @@
 
 @section('title', 'Produits')
 
-@section('header', 'Gestion des produits')
-
-@section('content')
-<div class="max-w-7xl mx-auto">
-    <div class="flex flex-col sm:flex-row justify-between items-center mb-6">
-        <h3 class="text-lg font-bold text-gray-900 mb-4 sm:mb-0">Liste des produits</h3>
-        <a href="{{ route('admin.products.create') }}" class="inline-flex items-center px-4 py-2 bg-blue-600 border border-transparent rounded-xl font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition ease-in-out duration-150">
-            Ajouter un produit
+@section('header')
+    <div class="flex justify-between items-center w-full">
+        <h2 class="text-3xl font-bold text-gray-900 tracking-tight">Liste des produits</h2>
+        <a href="{{ route('admin.products.create') }}" class="inline-flex items-center px-5 py-2.5 bg-blue-600 border border-transparent rounded-xl font-semibold text-sm text-white tracking-wide hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition ease-in-out duration-150 shadow-sm">
+            Créer un produit
         </a>
     </div>
+@endsection
 
+@section('content')
+<div class="w-full">
     <!-- Filtres -->
     <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 mb-6">
         <form method="GET" action="{{ route('admin.products.index') }}" class="flex flex-col md:flex-row gap-4 items-end">

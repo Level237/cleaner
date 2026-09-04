@@ -2,16 +2,17 @@
 
 @section('title', 'Catégories')
 
-@section('header', 'Gestion des catégories')
-
-@section('content')
-<div class="max-w-7xl mx-auto">
-    <div class="flex justify-between items-center mb-6">
-        <h3 class="text-lg font-bold text-gray-900">Liste des catégories</h3>
-        <a href="{{ route('admin.categories.create') }}" class="inline-flex items-center px-4 py-2 bg-blue-600 border border-transparent rounded-xl font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-700 focus:bg-blue-700 active:bg-blue-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition ease-in-out duration-150">
+@section('header')
+    <div class="flex justify-between items-center w-full">
+        <h2 class="text-3xl font-bold text-gray-900 tracking-tight">Liste des catégories</h2>
+        <a href="{{ route('admin.categories.create') }}" class="inline-flex items-center px-5 py-2.5 bg-blue-600 border border-transparent rounded-xl font-semibold text-sm text-white tracking-wide hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition ease-in-out duration-150 shadow-sm">
             Créer une catégorie
         </a>
     </div>
+@endsection
+
+@section('content')
+<div class="w-full">
 
     <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
         <div class="overflow-x-auto">

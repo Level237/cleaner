@@ -2,10 +2,17 @@
 
 @section('title', 'Modifier la catégorie')
 
-@section('header', 'Modifier : ' . $category->name)
+@section('header')
+    <div class="flex items-center space-x-3 mb-2">
+        <a href="{{ route('admin.categories.index') }}" class="text-blue-600 hover:text-blue-800 text-sm font-medium">&larr; Retour aux catégories</a>
+    </div>
+    <div class="flex justify-between items-center w-full">
+        <h2 class="text-3xl font-bold text-gray-900 tracking-tight">Modifier : {{ $category->name }}</h2>
+    </div>
+@endsection
 
 @section('content')
-<div class="max-w-4xl mx-auto">
+<div class="w-full max-w-7xl mx-auto">
     <form action="{{ route('admin.categories.update', $category) }}" method="POST" enctype="multipart/form-data" class="space-y-6">
         @csrf
         @method('PUT')

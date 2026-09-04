@@ -2,10 +2,17 @@
 
 @section('title', 'Modifier la collection')
 
-@section('header', 'Modifier : ' . $collection->name)
+@section('header')
+    <div class="flex items-center space-x-3 mb-2">
+        <a href="{{ route('admin.collections.index') }}" class="text-blue-600 hover:text-blue-800 text-sm font-medium">&larr; Retour aux collections</a>
+    </div>
+    <div class="flex justify-between items-center w-full">
+        <h2 class="text-3xl font-bold text-gray-900 tracking-tight">Modifier : {{ $collection->name }}</h2>
+    </div>
+@endsection
 
 @section('content')
-<div class="max-w-6xl mx-auto" x-data="collectionManager()">
+<div class="w-full max-w-7xl mx-auto" x-data="collectionManager()">
     <form action="{{ route('admin.collections.update', $collection) }}" method="POST" enctype="multipart/form-data" class="space-y-6">
         @csrf
         @method('PUT')

@@ -3,16 +3,19 @@
 @section('title', 'Modifier le produit')
 
 @section('header')
-    <div class="flex justify-between items-center w-full">
-        <div>Modifier : {{ $product->name }}</div>
-        <a href="{{ route('admin.products.variants.index', $product) }}" class="inline-flex items-center px-4 py-2 bg-gray-100 border border-transparent rounded-xl font-semibold text-xs text-gray-700 uppercase tracking-widest hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition ease-in-out duration-150">
+    <div class="flex items-center space-x-3 mb-2">
+        <a href="{{ route('admin.products.index') }}" class="text-blue-600 hover:text-blue-800 text-sm font-medium">&larr; Retour aux produits</a>
+    </div>
+    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center w-full gap-4">
+        <h2 class="text-3xl font-bold text-gray-900 tracking-tight">Modifier : {{ $product->name }}</h2>
+        <a href="{{ route('admin.products.variants.index', $product) }}" class="inline-flex items-center px-5 py-2.5 bg-white border border-gray-300 rounded-xl font-semibold text-sm text-gray-700 tracking-wide hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition ease-in-out duration-150 shadow-sm">
             Gérer les variantes
         </a>
     </div>
 @endsection
 
 @section('content')
-<div class="max-w-6xl mx-auto">
+<div class="w-full max-w-7xl mx-auto">
     <form action="{{ route('admin.products.update', $product) }}" method="POST" enctype="multipart/form-data" class="space-y-6">
         @csrf
         @method('PUT')
