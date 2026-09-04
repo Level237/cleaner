@@ -10,7 +10,7 @@ Route::get('/', function () {
 
 
 Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
-    Route::get('/', function () {
+    Route::get('/dashboard', function () {
         return view('admin.dashboard');
     })->name('dashboard');
 });
