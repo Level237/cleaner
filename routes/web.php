@@ -31,6 +31,10 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::get('/archives', [\App\Http\Controllers\Admin\ArchiveController::class, 'index'])->name('archives.index');
     Route::post('/archives/{type}/{id}/restore', [\App\Http\Controllers\Admin\ArchiveController::class, 'restore'])->name('archives.restore');
     Route::delete('/archives/{type}/{id}/force-delete', [\App\Http\Controllers\Admin\ArchiveController::class, 'forceDelete'])->name('archives.force-delete');
+
+    Route::get('/profile', [\App\Http\Controllers\Admin\ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [\App\Http\Controllers\Admin\ProfileController::class, 'update'])->name('profile.update');
+    Route::put('/profile/password', [\App\Http\Controllers\Admin\ProfileController::class, 'updatePassword'])->name('profile.password');
 });
 
 Route::middleware('auth')->group(function () {

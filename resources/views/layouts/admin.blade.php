@@ -76,12 +76,12 @@
                     Médiathèque
                 </a>
 
-                <!-- Utilisateurs -->
-                <a href="#" class="flex items-center px-3 py-3 text-base font-semibold rounded-xl text-gray-600 hover:bg-gray-50 hover:text-gray-900 transition-all group">
-                    <svg class="w-6 h-6 mr-3 flex-shrink-0 text-gray-400 group-hover:text-gray-600 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                <!-- Profil -->
+                <a href="{{ route('admin.profile.edit') }}" class="flex items-center px-3 py-3 text-base font-semibold rounded-xl {{ request()->routeIs('admin.profile.*') ? 'bg-blue-50 text-blue-700' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900' }} transition-all group">
+                    <svg class="w-6 h-6 mr-3 flex-shrink-0 {{ request()->routeIs('admin.profile.*') ? 'text-blue-600' : 'text-gray-400 group-hover:text-gray-600' }} transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
                     </svg>
-                    Utilisateurs
+                    Mon Profil
                 </a>
 
                 <!-- Archives -->
@@ -90,15 +90,6 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"></path>
                     </svg>
                     Archives
-                </a>
-
-                <!-- Paramètres -->
-                <a href="#" class="flex items-center px-3 py-2.5 text-sm font-medium rounded-xl text-gray-600 hover:bg-gray-50 hover:text-gray-900 transition-all group">
-                    <svg class="w-5 h-5 mr-3 flex-shrink-0 text-gray-400 group-hover:text-gray-600 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                    </svg>
-                    Paramètres
                 </a>
 
             </nav>
@@ -152,11 +143,44 @@
                         </svg>
                     </button>
 
-                    <!-- Avatar -->
-                    <div class="ml-1 cursor-pointer">
-                        <div class="h-10 w-10 rounded-full bg-gray-200 border-2 border-white shadow-sm flex items-center justify-center overflow-hidden">
-                            <!-- Placeholder avatar to match screenshot -->
-                            <img src="https://ui-avatars.com/api/?name=Admin&background=f3f4f6&color=374151" alt="Avatar" class="h-full w-full object-cover">
+                    <!-- Avatar Dropdown -->
+                    <div class="relative ml-3" x-data="{ open: false }">
+                        <button @click="open = !open" @click.away="open = false" class="flex items-center focus:outline-none">
+                            <div class="h-10 w-10 rounded-full bg-blue-50 border-2 border-white shadow-sm flex items-center justify-center overflow-hidden transition-transform hover:scale-105">
+                                <img src="https://ui-avatars.com/api/?name={{ urlencode(auth()->user()->name ?? 'Admin') }}&background=EFF6FF&color=1D4ED8&bold=true" alt="Avatar" class="h-full w-full object-cover">
+                            </div>
+                        </button>
+
+                        <div x-show="open" 
+                             x-transition:enter="transition ease-out duration-100" 
+                             x-transition:enter-start="transform opacity-0 scale-95" 
+                             x-transition:enter-end="transform opacity-100 scale-100" 
+                             x-transition:leave="transition ease-in duration-75" 
+                             x-transition:leave-start="transform opacity-100 scale-100" 
+                             x-transition:leave-end="transform opacity-0 scale-95" 
+                             class="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden z-50" 
+                             style="display: none;">
+                            
+                            <div class="px-4 py-3 border-b border-gray-50">
+                                <p class="text-sm font-medium text-gray-900 truncate">{{ auth()->user()->name ?? 'Administrateur' }}</p>
+                                <p class="text-xs text-gray-500 truncate">{{ auth()->user()->email ?? 'admin@example.com' }}</p>
+                            </div>
+
+                            <a href="{{ route('admin.profile.edit') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-blue-600 transition-colors">
+                                Mon Profil
+                            </a>
+                            <a href="{{ route('admin.dashboard') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-blue-600 transition-colors">
+                                Tableau de bord
+                            </a>
+                            
+                            <div class="border-t border-gray-50"></div>
+                            
+                            <form method="POST" action="{{ route('logout') }}">
+                                @csrf
+                                <button type="submit" class="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors">
+                                    Déconnexion
+                                </button>
+                            </form>
                         </div>
                     </div>
                 </div>
