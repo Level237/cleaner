@@ -31,13 +31,28 @@ class CollectionController extends Controller
         $data = $request->validated();
         
         $productsData = $data['products'] ?? [];
-        unset($data['products'], $data['image'], $data['remove_image']);
-
-        if ($request->hasFile('image')) {
-            $data['og_image_path'] = $request->file('image')->store('collections', 'public');
-        }
+        unset($data['products'], $data['main_image'], $data['main_image_alt'], $data['og_image'], $data['remove_main_image'], $data['remove_og_image']);
 
         $collection = Collection::create($data);
+
+        // Gestion de l'image principale via relation Media
+        if ($request->hasFile('main_image')) {
+            $path = $request->file('main_image')->store('collections/main', 'public');
+            
+            $collection->media()->create([
+                'path' => $path,
+                'role' => 'image',
+                'alt_text' => $request->input('main_image_alt'),
+                'is_primary' => true,
+                'sort_order' => 0,
+            ]);
+        }
+
+        // Gestion de l'image OG directement sur le modèle
+        if ($request->hasFile('og_image')) {
+            $path = $request->file('og_image')->store('collections/og', 'public');
+            $collection->update(['og_image_path' => $path]);
+        }
 
         $this->syncProducts($collection, $productsData);
 
@@ -68,21 +83,53 @@ class CollectionController extends Controller
         $data = $request->validated();
         
         $productsData = $data['products'] ?? [];
-        unset($data['products'], $data['image'], $data['remove_image']);
+        unset($data['products'], $data['main_image'], $data['main_image_alt'], $data['og_image'], $data['remove_main_image'], $data['remove_og_image']);
 
-        if ($request->boolean('remove_image') && $collection->og_image_path) {
-            Storage::disk('public')->delete($collection->og_image_path);
-            $data['og_image_path'] = null;
+        $collection->update($data);
+
+        // Suppression de l'image principale si demandé
+        if ($request->boolean('remove_main_image')) {
+            $mainMedia = $collection->primaryMedia;
+            if ($mainMedia) {
+                Storage::disk('public')->delete($mainMedia->path);
+                $mainMedia->delete();
+            }
         }
 
-        if ($request->hasFile('image')) {
+        // Nouvelle image principale
+        if ($request->hasFile('main_image')) {
+            $mainMedia = $collection->primaryMedia;
+            if ($mainMedia) {
+                Storage::disk('public')->delete($mainMedia->path);
+                $mainMedia->delete();
+            }
+            $path = $request->file('main_image')->store('collections/main', 'public');
+            $collection->media()->create([
+                'path' => $path,
+                'role' => 'image',
+                'alt_text' => $request->input('main_image_alt'),
+                'is_primary' => true,
+                'sort_order' => 0,
+            ]);
+        } elseif ($collection->primaryMedia && $request->has('main_image_alt')) {
+            $collection->primaryMedia->update([
+                'alt_text' => $request->input('main_image_alt')
+            ]);
+        }
+
+        // Image OG
+        if ($request->boolean('remove_og_image') && $collection->og_image_path) {
+            Storage::disk('public')->delete($collection->og_image_path);
+            $collection->update(['og_image_path' => null]);
+        }
+
+        if ($request->hasFile('og_image')) {
             if ($collection->og_image_path) {
                 Storage::disk('public')->delete($collection->og_image_path);
             }
-            $data['og_image_path'] = $request->file('image')->store('collections', 'public');
+            $path = $request->file('og_image')->store('collections/og', 'public');
+            $collection->update(['og_image_path' => $path]);
         }
-
-        $collection->update($data);
 
         $this->syncProducts($collection, $productsData);
 

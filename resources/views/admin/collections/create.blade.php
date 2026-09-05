@@ -143,12 +143,32 @@
                     </div>
                 </div>
 
-                <!-- Image -->
-                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+                <!-- Image principale -->
+                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6" x-data="{ imageUrl: null }">
                     <h3 class="text-lg font-bold text-gray-900 mb-4">Image principale</h3>
                     
                     <div>
-                        <input type="file" name="image" id="image" accept="image/*" class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
+                        <input type="file" name="main_image" id="main_image" accept="image/*" @change="imageUrl = URL.createObjectURL($event.target.files[0])" class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
+                        @error('main_image') <p class="mt-1 text-sm text-red-600">{{ $message }}</p> @enderror
+
+                        <!-- Preview & Alt Text -->
+                        <div class="mt-4 bg-gray-50 p-4 rounded-xl border border-gray-100" x-show="imageUrl" style="display: none;">
+                            <img :src="imageUrl" class="h-40 w-full object-cover rounded-lg mb-4 border border-gray-200 shadow-sm">
+                            <label for="main_image_alt" class="block text-sm font-medium text-gray-700">Texte alternatif (Alt)</label>
+                            <input type="text" name="main_image_alt" id="main_image_alt" value="{{ old('main_image_alt') }}" placeholder="Description SEO" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
+                            @error('main_image_alt') <p class="mt-1 text-sm text-red-600">{{ $message }}</p> @enderror
+                        </div>
+                    </div>
+                </div>
+
+                <!-- OG Image -->
+                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+                    <h3 class="text-lg font-bold text-gray-900 mb-4">Image de partage (OG)</h3>
+                    
+                    <div>
+                        <input type="file" name="og_image" id="og_image" accept="image/*" class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
+                        <p class="mt-2 text-xs text-gray-500">Image optimisée pour le partage social (1200x630px recommandé).</p>
+                        @error('og_image') <p class="mt-1 text-sm text-red-600">{{ $message }}</p> @enderror
                     </div>
                 </div>
             </div>

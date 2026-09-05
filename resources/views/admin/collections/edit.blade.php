@@ -144,23 +144,58 @@
                     </div>
                 </div>
 
-                <!-- Image -->
-                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+                <!-- Image principale -->
+                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6" x-data="{ imageUrl: null }">
                     <h3 class="text-lg font-bold text-gray-900 mb-4">Image principale</h3>
+                    
+                    @if($collection->primaryMedia)
+                        <div class="mt-2 mb-4" x-show="!imageUrl">
+                            <div class="relative group inline-block w-full">
+                                <img src="{{ Storage::url($collection->primaryMedia->path) }}" alt="{{ $collection->primaryMedia->alt_text }}" class="h-32 w-full object-cover rounded-lg">
+                                <label class="inline-flex items-center mt-2 text-sm text-red-600">
+                                    <input type="checkbox" name="remove_main_image" value="1" class="rounded border-gray-300 text-red-600 focus:ring-red-500 mr-2">
+                                    Supprimer l'image actuelle
+                                </label>
+                            </div>
+                        </div>
+                    @endif
+
+                    <div>
+                        <input type="file" name="main_image" id="main_image" accept="image/*" @change="imageUrl = URL.createObjectURL($event.target.files[0])" class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
+                        @error('main_image') <p class="mt-1 text-sm text-red-600">{{ $message }}</p> @enderror
+
+                        <!-- Dynamic Preview for new upload -->
+                        <div class="mt-4 bg-gray-50 p-4 rounded-xl border border-gray-100" x-show="imageUrl" style="display: none;">
+                            <img :src="imageUrl" class="h-40 w-full object-cover rounded-lg mb-4 border border-gray-200 shadow-sm">
+                            <span class="block text-xs text-blue-600 mb-2 font-medium">Nouvelle image sélectionnée</span>
+                        </div>
+
+                        <div class="mt-3">
+                            <label class="block text-sm font-medium text-gray-700">Texte alternatif (Alt)</label>
+                            <input type="text" name="main_image_alt" value="{{ old('main_image_alt', $collection->primaryMedia ? $collection->primaryMedia->alt_text : '') }}" placeholder="Description SEO" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- OG Image -->
+                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 mt-6">
+                    <h3 class="text-lg font-bold text-gray-900 mb-4">Image de partage (OG)</h3>
                     
                     @if($collection->og_image_path)
                         <div class="mt-2 mb-4">
-                            <img src="{{ Storage::url($collection->og_image_path) }}" alt="{{ $collection->name }}" class="h-32 w-full object-cover rounded-lg">
+                            <img src="{{ Storage::url($collection->og_image_path) }}" alt="OG Image" class="h-32 w-full object-cover rounded-lg">
                             <div class="mt-2">
                                 <label class="inline-flex items-center text-sm text-red-600">
-                                    <input type="checkbox" name="remove_image" value="1" class="rounded border-gray-300 text-red-600 focus:ring-red-500 mr-2">
-                                    Supprimer l'image
+                                    <input type="checkbox" name="remove_og_image" value="1" class="rounded border-gray-300 text-red-600 focus:ring-red-500 mr-2">
+                                    Supprimer l'image OG
                                 </label>
                             </div>
                         </div>
                     @endif
                     <div>
-                        <input type="file" name="image" id="image" accept="image/*" class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
+                        <input type="file" name="og_image" id="og_image" accept="image/*" class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
+                        <p class="mt-2 text-xs text-gray-500">Image optimisée pour le partage social (1200x630px recommandé).</p>
+                        @error('og_image') <p class="mt-1 text-sm text-red-600">{{ $message }}</p> @enderror
                     </div>
                 </div>
             </div>

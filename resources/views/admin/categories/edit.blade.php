@@ -72,20 +72,36 @@
                 </div>
 
                 <!-- Image -->
-                <div class="md:col-span-2">
-                    <label for="image" class="block text-sm font-medium text-gray-700">Image principale</label>
-                    @if($category->image_path)
-                        <div class="mt-2 mb-2">
-                            <img src="{{ Storage::url($category->image_path) }}" alt="Image actuelle" class="h-32 rounded-lg object-cover mb-2">
-                            <label class="inline-flex items-center">
-                                <input type="checkbox" name="remove_image" value="1" class="rounded border-gray-300 text-red-600 shadow-sm focus:border-red-300 focus:ring focus:ring-red-200 focus:ring-opacity-50">
-                                <span class="ml-2 text-sm text-red-600">Supprimer cette image</span>
-                            </label>
+                <div class="md-col-span-2">
+                    <div class="p-4 bg-gray-50 rounded-xl border border-gray-100" x-data="{ imageUrl: null }">
+                        <label for="main_image" class="block text-sm font-medium text-gray-700">Image principale</label>
+                        
+                        @if($category->primaryMedia)
+                            <div class="mt-2 mb-4" x-show="!imageUrl">
+                                <div class="relative group inline-block">
+                                    <img src="{{ Storage::url($category->primaryMedia->path) }}" alt="{{ $category->primaryMedia->alt_text }}" class="h-32 rounded-lg object-cover">
+                                    <label class="inline-flex items-center mt-2 text-sm">
+                                        <input type="checkbox" name="remove_main_image" value="1" class="rounded border-gray-300 text-red-600 focus:ring-red-500 mr-2">
+                                        Supprimer l'image actuelle
+                                    </label>
+                                </div>
+                            </div>
+                        @endif
+
+                        <input type="file" name="main_image" id="main_image" accept="image/*" @change="imageUrl = URL.createObjectURL($event.target.files[0])" class="mt-2 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
+                        @error('main_image') <p class="mt-1 text-sm text-red-600">{{ $message }}</p> @enderror
+                        
+                        <!-- Dynamic Preview for new upload -->
+                        <div class="mt-4 mb-4" x-show="imageUrl" style="display: none;">
+                            <img :src="imageUrl" class="h-32 rounded-lg object-cover border border-gray-200">
+                            <span class="block text-xs text-blue-600 mt-1 font-medium">Nouvelle image sélectionnée</span>
                         </div>
-                    @endif
-                    <input type="file" name="image" id="image" accept="image/*" class="mt-2 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
-                    <p class="mt-1 text-xs text-gray-500">Laissez vide pour conserver l'image actuelle.</p>
-                    @error('image') <p class="mt-1 text-sm text-red-600">{{ $message }}</p> @enderror
+
+                        <div class="mt-3">
+                            <label class="block text-sm font-medium text-gray-700">Texte alternatif (Alt)</label>
+                            <input type="text" name="main_image_alt" value="{{ old('main_image_alt', $category->primaryMedia ? $category->primaryMedia->alt_text : '') }}" placeholder="Ex: Catégorie Thés Verts" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

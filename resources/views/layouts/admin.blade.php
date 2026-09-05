@@ -69,11 +69,11 @@
                 </div>
 
                 <!-- Médias -->
-                <a href="#" class="flex items-center px-3 py-3 text-base font-semibold rounded-xl text-gray-600 hover:bg-gray-50 hover:text-gray-900 transition-all group">
-                    <svg class="w-6 h-6 mr-3 flex-shrink-0 text-gray-400 group-hover:text-gray-600 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <a href="{{ route('admin.media.index') }}" class="flex items-center px-3 py-3 text-base font-semibold rounded-xl {{ request()->routeIs('admin.media.*') ? 'bg-blue-50 text-blue-700' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900' }} transition-all group">
+                    <svg class="w-6 h-6 mr-3 flex-shrink-0 {{ request()->routeIs('admin.media.*') ? 'text-blue-600' : 'text-gray-400 group-hover:text-gray-600' }} transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
                     </svg>
-                    Médias
+                    Médiathèque
                 </a>
 
                 <!-- Utilisateurs -->

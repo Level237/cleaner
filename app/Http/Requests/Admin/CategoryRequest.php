@@ -50,15 +50,16 @@ class CategoryRequest extends FormRequest
             'position' => ['required', 'integer', 'min:0'],
             
             // Image
-            'image' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,webp', 'max:2048'],
-            'image_alt' => ['nullable', 'string', 'max:255'],
-            'remove_image' => ['nullable', 'boolean'],
+            'main_image' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,webp', 'max:2048'],
+            'main_image_alt' => ['nullable', 'string', 'max:255'],
+            'remove_main_image' => ['nullable', 'boolean'],
             
             // SEO
             'seo_title' => ['nullable', 'string', 'max:255'],
             'seo_description' => ['nullable', 'string', 'max:500'],
             'canonical_url' => ['nullable', 'url', 'max:255'],
             'og_image' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,webp', 'max:2048'],
+            'remove_og_image' => ['nullable', 'boolean'],
         ];
     }
 

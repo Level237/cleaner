@@ -32,20 +32,29 @@ class CategoryController extends Controller
     {
         $data = $request->validated();
 
-        // Gestion de l'image principale
-        if ($request->hasFile('image')) {
-            $data['image_path'] = $request->file('image')->store('categories', 'public');
+        // Nettoyage des champs fichiers avant création
+        unset($data['main_image'], $data['main_image_alt'], $data['og_image'], $data['remove_main_image'], $data['remove_og_image']);
+
+        $category = Category::create($data);
+
+        // Gestion de l'image principale via relation Media
+        if ($request->hasFile('main_image')) {
+            $path = $request->file('main_image')->store('categories/main', 'public');
+            
+            $category->media()->create([
+                'path' => $path,
+                'role' => 'image',
+                'alt_text' => $request->input('main_image_alt'),
+                'is_primary' => true,
+                'sort_order' => 0,
+            ]);
         }
 
-        // Gestion de l'image OG
+        // Gestion de l'image OG directement sur le modèle (comme Product)
         if ($request->hasFile('og_image')) {
-            $data['og_image_path'] = $request->file('og_image')->store('categories/og', 'public');
+            $path = $request->file('og_image')->store('categories/og', 'public');
+            $category->update(['og_image_path' => $path]);
         }
-
-        // Nettoyage des champs fichiers
-        unset($data['image'], $data['og_image'], $data['remove_image']);
-
-        Category::create($data);
 
         return redirect()
             ->route('admin.categories.index')
@@ -66,33 +75,54 @@ class CategoryController extends Controller
     {
         $data = $request->validated();
 
-        // Suppression de l'image si demandé
-        if ($request->boolean('remove_image') && $category->image_path) {
-            Storage::disk('public')->delete($category->image_path);
-            $data['image_path'] = null;
-            $data['image_alt'] = null;
+        // Nettoyage avant update
+        unset($data['main_image'], $data['main_image_alt'], $data['og_image'], $data['remove_main_image'], $data['remove_og_image']);
+
+        $category->update($data);
+
+        // Suppression de l'image principale si demandé
+        if ($request->boolean('remove_main_image')) {
+            $mainMedia = $category->primaryMedia;
+            if ($mainMedia) {
+                Storage::disk('public')->delete($mainMedia->path);
+                $mainMedia->delete();
+            }
         }
 
         // Nouvelle image principale
-        if ($request->hasFile('image')) {
-            if ($category->image_path) {
-                Storage::disk('public')->delete($category->image_path);
+        if ($request->hasFile('main_image')) {
+            $mainMedia = $category->primaryMedia;
+            if ($mainMedia) {
+                Storage::disk('public')->delete($mainMedia->path);
+                $mainMedia->delete();
             }
-            $data['image_path'] = $request->file('image')->store('categories', 'public');
+            $path = $request->file('main_image')->store('categories/main', 'public');
+            $category->media()->create([
+                'path' => $path,
+                'role' => 'image',
+                'alt_text' => $request->input('main_image_alt'),
+                'is_primary' => true,
+                'sort_order' => 0,
+            ]);
+        } elseif ($category->primaryMedia && $request->has('main_image_alt')) {
+            $category->primaryMedia->update([
+                'alt_text' => $request->input('main_image_alt')
+            ]);
         }
 
-        // Nouvelle image OG
+        // Image OG
+        if ($request->boolean('remove_og_image') && $category->og_image_path) {
+            Storage::disk('public')->delete($category->og_image_path);
+            $category->update(['og_image_path' => null]);
+        }
+
         if ($request->hasFile('og_image')) {
             if ($category->og_image_path) {
                 Storage::disk('public')->delete($category->og_image_path);
             }
-            $data['og_image_path'] = $request->file('og_image')->store('categories/og', 'public');
+            $path = $request->file('og_image')->store('categories/og', 'public');
+            $category->update(['og_image_path' => $path]);
         }
-
-        // Nettoyage
-        unset($data['image'], $data['og_image'], $data['remove_image']);
-
-        $category->update($data);
 
         return redirect()
             ->route('admin.categories.index')

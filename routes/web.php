@@ -23,6 +23,11 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::resource('products.variants', ProductVariantController::class)->except(['show']);
     Route::resource('collections', CollectionController::class)->except(['show']);
     
+    Route::get('/media', [\App\Http\Controllers\Admin\MediaController::class, 'index'])->name('media.index');
+    Route::put('/media/{medium}', [\App\Http\Controllers\Admin\MediaController::class, 'update'])->name('media.update');
+    Route::delete('/media/{medium}', [\App\Http\Controllers\Admin\MediaController::class, 'destroy'])->name('media.destroy');
+    Route::post('/media/bulk-update', [\App\Http\Controllers\Admin\MediaController::class, 'bulkUpdateAlt'])->name('media.bulk-update');
+    
     Route::get('/archives', [\App\Http\Controllers\Admin\ArchiveController::class, 'index'])->name('archives.index');
     Route::post('/archives/{type}/{id}/restore', [\App\Http\Controllers\Admin\ArchiveController::class, 'restore'])->name('archives.restore');
     Route::delete('/archives/{type}/{id}/force-delete', [\App\Http\Controllers\Admin\ArchiveController::class, 'forceDelete'])->name('archives.force-delete');

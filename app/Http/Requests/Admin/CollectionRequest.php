@@ -46,8 +46,11 @@ class CollectionRequest extends FormRequest
             'canonical_url' => ['nullable', 'url', 'max:255'],
             
             // Image
-            'image' => ['nullable', 'image', 'max:2048'],
-            'remove_image' => ['nullable', 'boolean'],
+            'main_image' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,webp', 'max:2048'],
+            'main_image_alt' => ['nullable', 'string', 'max:255'],
+            'remove_main_image' => ['nullable', 'boolean'],
+            'og_image' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,webp', 'max:2048'],
+            'remove_og_image' => ['nullable', 'boolean'],
 
             // Products sync
             'products' => ['nullable', 'array'],

@@ -88,6 +88,13 @@ class Category extends Model
             ->orderBy('sort_order');
     }
 
+    public function primaryMedia()
+    {
+        return $this->morphOne(Media::class, 'mediable')
+            ->where('is_primary', true)
+            ->orderBy('sort_order');
+    }
+
     /**
      * Scope catégories visibles.
      */
