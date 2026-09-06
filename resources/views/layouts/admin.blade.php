@@ -23,10 +23,7 @@
         >
             <!-- Logo Section -->
             <div class="flex items-center h-[72px] px-6 border-b border-gray-100">
-                <div class="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center mr-3 shadow-md shadow-blue-600/20">
-                    <span class="text-white font-bold font-serif text-lg">M</span>
-                </div>
-                <h1 class="text-xl font-bold font-sans tracking-tight text-gray-900">Mondays</h1>
+                <img src="{{ asset('assets/logo.png') }}" alt="Logo" class="h-20 w-auto object-contain">
             </div>
 
             <!-- Navigation -->
@@ -147,7 +144,7 @@
                     <div class="relative ml-3" x-data="{ open: false }">
                         <button @click="open = !open" @click.away="open = false" class="flex items-center focus:outline-none">
                             <div class="h-10 w-10 rounded-full bg-blue-50 border-2 border-white shadow-sm flex items-center justify-center overflow-hidden transition-transform hover:scale-105">
-                                <img src="https://ui-avatars.com/api/?name={{ urlencode(auth()->user()->name ?? 'Admin') }}&background=EFF6FF&color=1D4ED8&bold=true" alt="Avatar" class="h-full w-full object-cover">
+                                <img src="https://ui-avatars.com/api/?name={{ urlencode(auth()->user()->name ?? 'Admin') }}&background=e5f6e8&color=1b4e23&bold=true" alt="Avatar" class="h-full w-full object-cover">
                             </div>
                         </button>
 
