@@ -9,7 +9,7 @@
                 <!-- Left: Content (Vertically centered) -->
                 <div class="w-full lg:w-1/2 flex flex-col justify-center text-center lg:text-left pb-12 lg:pb-0 lg:py-24">
                     <h1 class="text-4xl sm:text-5xl md:text-6xl lg:text-[4rem] font-serif text-[#F8F9F5] leading-[1.1] tracking-tight">
-                        Le thé  qui fait du bien <br class="hidden lg:block">bien-être à <span class="text-[#d4f977] italic">votre corps</span>
+                        Le thé  qui fait du bien-être à<span class="text-[#d4f977] italic"> votre corps.</span>
                     </h1>
                     <p class="mt-6 text-base sm:text-lg text-gray-300 max-w-xl mx-auto lg:mx-0 leading-relaxed font-light">
                         Des infusions aux plantes soigneusement sélectionnées pour accompagner votre détox, booster votre énergie et retrouver votre légèreté jour après jour. Deux sachets par jour, un rituel simple, un bien-être qui se sent.

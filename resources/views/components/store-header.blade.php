@@ -1,7 +1,4 @@
-@php
-    $categories = \App\Models\Category::all();
-    $collections = \App\Models\Collection::all();
-@endphp
+
 
 <header x-data="{ mobileMenuOpen: false, scrolled: false }" 
         @scroll.window="scrolled = (window.pageYOffset > 20)"
