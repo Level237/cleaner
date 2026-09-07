@@ -1,3 +1,18 @@
+@php
+    $allCurrencies = [
+        "XAF" => ["flag" => "🇨🇲", "label" => "FCFA"],
+        "XOF" => ["flag" => "🇸🇳", "label" => "FCFA"],
+        "EUR" => ["flag" => "🇪🇺", "label" => "Euro"],
+        "USD" => ["flag" => "🇺🇸", "label" => "USD"],
+        "CAD" => ["flag" => "🇨🇦", "label" => "CAD"],
+        "GBP" => ["flag" => "🇬🇧", "label" => "GBP"],
+        "CHF" => ["flag" => "🇨🇭", "label" => "CHF"],
+        "MAD" => ["flag" => "🇲🇦", "label" => "MAD"],
+        "AED" => ["flag" => "🇦🇪", "label" => "AED"],
+    ];
+    $availableCurrencies = collect($allCurrencies)->only(config("currency.available"))->toArray();
+    $currentCurr = session("currency", config("currency.default"));
+@endphp
 
 
 <header x-data="{ 
@@ -81,6 +96,42 @@
 
             <!-- Right: Icons -->
             <div class="flex items-center space-x-5">
+                <!-- Currency Switcher -->
+                <div class="relative" x-data="{ open: false }" @mouseenter="open = true" @mouseleave="open = false">
+                    <button class="text-white/90 hover:text-white font-medium text-base transition-colors inline-flex items-center gap-1">
+                        {{ $allCurrencies[$currentCurr]['flag'] ?? '🌍' }}
+                        <span class="hidden sm:inline">{{ $currentCurr }}</span>
+                        <svg class="w-4 h-4 transition-transform duration-200" :class="{'rotate-180': open}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </button>
+                    <div x-show="open" 
+                         x-transition:enter="transition ease-out duration-100"
+                         x-transition:enter-start="opacity-0 translate-y-1"
+                         x-transition:enter-end="opacity-100 translate-y-0"
+                         x-transition:leave="transition ease-in duration-75"
+                         x-transition:leave-start="opacity-100 translate-y-0"
+                         x-transition:leave-end="opacity-0 translate-y-1"
+                         class="absolute right-0 mt-0 pt-4 w-48 z-50" 
+                         style="display: none;">
+                        <div class="bg-white border border-gray-100 shadow-xl rounded-2xl overflow-hidden py-2 text-gray-800">
+                            @foreach($availableCurrencies as $code => $data)
+                                <form action="{{ route('currency.set') }}" method="POST" class="m-0">
+                                    @csrf
+                                    <input type="hidden" name="currency" value="{{ $code }}">
+                                    <button type="submit" class="w-full text-left px-4 py-2 text-sm hover:bg-gray-50 hover:text-[#3ab54a] transition-colors flex items-center justify-between">
+                                        <span class="flex items-center gap-2">
+                                            <span>{{ $data['flag'] }}</span>
+                                            <span>{{ $code }} - {{ $data['label'] }}</span>
+                                        </span>
+                                        @if($currentCurr === $code)
+                                            <svg class="w-4 h-4 text-[#3ab54a]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                                        @endif
+                                    </button>
+                                </form>
+                            @endforeach
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Search -->
                 <button class="text-white/90 hover:text-white transition-colors">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">

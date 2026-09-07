@@ -40,7 +40,7 @@
                                 <div class="text-xs text-gray-500">SKU: {{ $variant->sku ?? 'N/A' }}</div>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 font-medium">
-                                {{ number_format($variant->price, 2) }} €
+                                {{ number_format($variant->price, 2) }} {{ config('currency.base') }}
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
                                 @if($variant->stock_status === 'in_stock')

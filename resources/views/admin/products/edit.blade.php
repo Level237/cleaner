@@ -276,7 +276,7 @@
                             <div class="mt-1 relative rounded-md shadow-sm">
                                 <input type="number" step="0.01" name="price" id="price" value="{{ old('price', $product->price) }}" class="block w-full rounded-md border-gray-300 pl-3 pr-12 focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
                                 <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
-                                    <span class="text-gray-500 sm:text-sm">{{ $product->currency ?? '€' }}</span>
+                                    <span class="text-gray-500 sm:text-sm">{{ $product->currency ?? config('currency.base') }}</span>
                                 </div>
                             </div>
                         </div>
@@ -286,7 +286,7 @@
                             <div class="mt-1 relative rounded-md shadow-sm">
                                 <input type="number" step="0.01" name="compare_price" id="compare_price" value="{{ old('compare_price', $product->compare_price) }}" class="block w-full rounded-md border-gray-300 pl-3 pr-12 focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
                                 <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
-                                    <span class="text-gray-500 sm:text-sm">{{ $product->currency ?? '€' }}</span>
+                                    <span class="text-gray-500 sm:text-sm">{{ $product->currency ?? config('currency.base') }}</span>
                                 </div>
                             </div>
                         </div>

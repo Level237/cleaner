@@ -47,7 +47,7 @@ return new class extends Migration
     // Commerce
     $table->decimal('price', 10, 2)->default(0);
     $table->decimal('compare_price', 10, 2)->nullable();
-    $table->string('currency', 3)->default('EUR');
+    $table->string('currency', 3)->default('XAF');
     $table->string('stock_status')->default('in_stock'); // in_stock, out_of_stock, preorder
     $table->unsignedInteger('stock_quantity')->nullable();
 

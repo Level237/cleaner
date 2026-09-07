@@ -24,7 +24,7 @@ class ProductRequest extends FormRequest
         $this->merge([
             'is_featured' => $this->has('is_featured'),
             'is_new' => $this->has('is_new'),
-            'currency' => $this->input('currency', 'EUR'),
+            'currency' => $this->input('currency', config('currency.base')),
             'status' => $this->input('status', 'draft'),
             'stock_status' => $this->input('stock_status', 'in_stock'),
         ]);

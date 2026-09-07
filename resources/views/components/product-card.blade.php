@@ -66,11 +66,11 @@
             <div class="flex flex-col">
                 @if ($hasPromo)
                     <span class="text-xs text-gray-400 line-through mb-0.5">
-                        {{ number_format($product->compare_price, 2, ',', ' ') }} €
+                        @price($product->compare_price)
                     </span>
                 @endif
                 <span class="text-2xl font-bold text-[#1a2217]">
-                    {{ number_format($product->price, 2, ',', ' ') }} €
+                    @price($product->price)
                 </span>
             </div>
             

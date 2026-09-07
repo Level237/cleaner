@@ -96,7 +96,7 @@
                                 {{ $product->primaryCategory ? $product->primaryCategory->name : '-' }}
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 font-medium">
-                                {{ $product->price ? number_format($product->price, 2) . ' ' . ($product->currency ?? '€') : '-' }}
+                                {{ $product->price ? number_format($product->price, 2) . ' ' . ($product->currency ?? config('currency.base')) : '-' }}
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
                                 @if($product->stock_status === 'in_stock')
