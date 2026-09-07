@@ -1,7 +1,7 @@
 @props(['product'])
 
 @php
-    $image = $product->mainImage->first();
+    $image = $product->primaryMedia;
     $hasPromo = $product->compare_price && $product->compare_price > $product->price;
 @endphp
 

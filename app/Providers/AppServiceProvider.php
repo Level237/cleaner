@@ -19,8 +19,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        // Share categories and collections globally to the store header
-        \Illuminate\Support\Facades\View::composer('components.store-header', function ($view) {
+        // Share categories and collections globally to the store header and footer
+        \Illuminate\Support\Facades\View::composer(['components.store-header', 'components.footer'], function ($view) {
             $view->with('categories', \App\Models\Category::all());
             $view->with('collections', \App\Models\Collection::all());
         });

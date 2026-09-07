@@ -1,4 +1,4 @@
-    <div class="relative bg-[#283324] overflow-hidden min-h-[calc(100vh-80px)] flex items-stretch bg-cover bg-center bg-no-repeat" style="background-image: url('{{ asset('assets/bg.png') }}');">
+    <div class="relative bg-[#283324] mt-[-80px] overflow-hidden min-h-[calc(100vh-80px)] flex items-stretch bg-cover bg-center bg-no-repeat" style="background-image: url('{{ asset('assets/bg.png') }}');">
         
         <!-- Dark overlay to ensure text remains readable depending on the background image -->
         <div class="absolute inset-0 z-0 bg-black/20 pointer-events-none"></div>

@@ -21,10 +21,13 @@
         <x-store-header />
 
         <!-- Page Content -->
-        <main>
+        <main class="flex-grow pt-20">
             @yield('content')
         </main>
+        
+        <x-footer />
 
-        <!-- Footer could go here -->
-    </body>
+
+    @stack('scripts')
+</body>
 </html>

@@ -1,9 +1,19 @@
 
 
-<header x-data="{ mobileMenuOpen: false, scrolled: false }" 
-        @scroll.window="scrolled = (window.pageYOffset > 20)"
-        :class="{'bg-[#283324]/90 backdrop-blur-md shadow-sm': scrolled, 'bg-transparent': !scrolled}"
-        class="fixed w-full top-0 z-50 transition-all duration-300">
+<header x-data="{ 
+            mobileMenuOpen: false, 
+            y: 0,
+            get isTop() { return this.y <= 50; },
+            get isHidden() { return this.y > 50 && this.y < (window.innerHeight - 100); },
+            get isSticky() { return this.y >= (window.innerHeight - 100); }
+        }" 
+        @scroll.window="y = window.pageYOffset"
+        :class="{
+            'bg-transparent translate-y-0': isTop,
+            '-translate-y-full': isHidden,
+            'bg-[#1a2217]/95 backdrop-blur-md shadow-md translate-y-0': isSticky
+        }"
+        class="fixed w-full top-0 z-50 transition-all duration-500">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between items-center h-24">
             
