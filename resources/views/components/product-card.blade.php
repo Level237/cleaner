@@ -6,7 +6,7 @@
 @endphp
 
 <a href="{{ url('/produits/' . $product->slug) }}"
-   class="group flex flex-col bg-white rounded-3xl shadow-sm hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 overflow-hidden border border-gray-100">
+   class="group flex flex-col bg-white rounded-3xl shadow-sm  duration-300 overflow-hidden border border-gray-100">
 
     {{-- Image Box --}}
     <div class="relative aspect-[4/5] overflow-hidden bg-[#f4fbf5]">
@@ -14,7 +14,7 @@
             <img src="{{ asset('storage/' . $image->path) }}"
                  alt="{{ $image->alt_text ?? $product->name }}"
                  loading="lazy"
-                 class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+                 class="w-full h-full object-cover transition-transform duration-700 ">
         @else
             <!-- Fallback Image -->
             <div class="w-full h-full bg-gradient-to-br from-[#f4fbf5] to-[#e4f5e7] flex items-center justify-center text-6xl opacity-50">

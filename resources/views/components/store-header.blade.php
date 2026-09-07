@@ -11,6 +11,9 @@
         "AED" => ["flag" => "🇦🇪", "label" => "AED"],
     ];
     $availableCurrencies = collect($allCurrencies)->only(config("currency.available"))->toArray();
+    $isHome = request()->routeIs("home");
+    $textColorClass = !$isHome ? "text-[#1a2217] hover:text-[#3ab54a]" : "text-white/90 hover:text-white";
+    $iconColorClass = !$isHome ? "text-[#1a2217] hover:text-[#3ab54a]" : "text-white/90 hover:text-white";
     $currentCurr = session("currency", config("currency.default"));
 @endphp
 
@@ -18,15 +21,17 @@
 <header x-data="{ 
             mobileMenuOpen: false, 
             y: 0,
+            isProduct: {{ !$isHome ? 'true' : 'false' }},
             get isTop() { return this.y <= 50; },
-            get isHidden() { return this.y > 50 && this.y < (window.innerHeight - 100); },
-            get isSticky() { return this.y >= (window.innerHeight - 100); }
+            get isHidden() { return !this.isProduct && this.y > 50 && this.y < (window.innerHeight - 100); },
+            get isSticky() { return this.isProduct || this.y >= (window.innerHeight - 100); }
         }" 
         @scroll.window="y = window.pageYOffset"
         :class="{
-            'bg-transparent translate-y-0': isTop,
+            'bg-transparent translate-y-0': !isProduct && isTop,
             '-translate-y-full': isHidden,
-            'bg-[#1a2217]/95 backdrop-blur-md shadow-md translate-y-0': isSticky
+            'bg-[#1a2217]/95 backdrop-blur-md shadow-md translate-y-0': !isProduct && isSticky,
+            'bg-white/95 backdrop-blur-md shadow-sm translate-y-0': isProduct
         }"
         class="fixed w-full top-0 z-50 transition-all duration-500">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -35,17 +40,17 @@
             <!-- Left: Logo -->
             <div class="flex-shrink-0 flex items-center">
                 <a href="{{ url('/') }}">
-                    <img src="{{ asset('assets/logo.png') }}" alt="Mondays Logo" class="h-24 w-auto object-contain brightness-0 invert">
+                    <img src="{{ asset('assets/logo.png') }}" alt="Mondays Logo" class="h-24 w-auto object-contain {{ !$isHome ? '' : 'brightness-0 invert' }}">
                 </a>
             </div>
 
             <!-- Center: Navigation (Desktop) -->
             <nav class="hidden md:flex space-x-8 items-center">
-                <a href="{{ url('/') }}" class="text-white/90 hover:text-white font-medium text-base transition-colors">Accueil</a>
+                <a href="{{ url('/') }}" class="{{ $textColorClass }} font-medium text-base transition-colors">Accueil</a>
                 
                 <!-- Boutique Dropdown -->
                 <div class="relative" x-data="{ open: false }" @mouseenter="open = true" @mouseleave="open = false">
-                    <a href="#" class="text-white/90 hover:text-white font-medium text-base transition-colors inline-flex items-center">
+                    <a href="#" class="{{ $textColorClass }} font-medium text-base transition-colors inline-flex items-center">
                         Boutique
                         <svg class="ml-1 w-4 h-4 transition-transform duration-200" :class="{'rotate-180': open}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
                     </a>
@@ -68,7 +73,7 @@
 
                 <!-- Collections Dropdown -->
                 <div class="relative" x-data="{ open: false }" @mouseenter="open = true" @mouseleave="open = false">
-                    <a href="#" class="text-white/90 hover:text-white font-medium text-base transition-colors inline-flex items-center">
+                    <a href="#" class="{{ $textColorClass }} font-medium text-base transition-colors inline-flex items-center">
                         Collections
                         <svg class="ml-1 w-4 h-4 transition-transform duration-200" :class="{'rotate-180': open}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
                     </a>
@@ -89,16 +94,16 @@
                     </div>
                 </div>
 
-                <a href="#" class="text-white/90 hover:text-white font-medium text-base transition-colors">Notre Maison</a>
-                <a href="#" class="text-white/90 hover:text-white font-medium text-base transition-colors">Journal</a>
-                <a href="#" class="text-white/90 hover:text-white font-medium text-base transition-colors">Contact</a>
+                <a href="#" class="{{ $textColorClass }} font-medium text-base transition-colors">Notre Maison</a>
+                <a href="#" class="{{ $textColorClass }} font-medium text-base transition-colors">Journal</a>
+                <a href="#" class="{{ $textColorClass }} font-medium text-base transition-colors">Contact</a>
             </nav>
 
             <!-- Right: Icons -->
             <div class="flex items-center space-x-5">
                 <!-- Currency Switcher -->
                 <div class="relative" x-data="{ open: false }" @mouseenter="open = true" @mouseleave="open = false">
-                    <button class="text-white/90 hover:text-white font-medium text-base transition-colors inline-flex items-center gap-1">
+                    <button class="{{ $textColorClass }} font-medium text-base transition-colors inline-flex items-center gap-1">
                         {{ $allCurrencies[$currentCurr]['flag'] ?? '🌍' }}
                         <span class="hidden sm:inline">{{ $currentCurr }}</span>
                         <svg class="w-4 h-4 transition-transform duration-200" :class="{'rotate-180': open}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
@@ -133,21 +138,21 @@
                 </div>
 
                 <!-- Search -->
-                <button class="text-white/90 hover:text-white transition-colors">
+                <button class="{{ $textColorClass }} transition-colors">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
                     </svg>
                 </button>
                 
                 <!-- Account -->
-                <a href="{{ route('login') }}" class="text-white/90 hover:text-white transition-colors">
+                <a href="{{ route('login') }}" class="{{ $textColorClass }} transition-colors">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
                     </svg>
                 </a>
                 
                 <!-- Cart -->
-                <a href="#" class="text-white/90 hover:text-white transition-colors relative">
+                <a href="#" class="{{ $textColorClass }} transition-colors relative">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path>
                     </svg>
@@ -157,7 +162,7 @@
 
                 <!-- Mobile menu button -->
                 <div class="flex items-center md:hidden ml-4">
-                    <button @click="mobileMenuOpen = true" class="text-white/90 hover:text-white focus:outline-none">
+                    <button @click="mobileMenuOpen = true" class="{{ $textColorClass }} focus:outline-none">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
                         </svg>
