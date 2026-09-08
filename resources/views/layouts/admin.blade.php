@@ -53,6 +53,14 @@
                     Catégories
                 </a>
 
+                <!-- Commandes -->
+                <a href="{{ route('admin.orders.index') }}" class="flex items-center px-3 py-3 text-base font-semibold rounded-xl {{ request()->routeIs('admin.orders.*') ? 'bg-blue-50 text-blue-700' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900' }} transition-all group">
+                    <svg class="w-6 h-6 mr-3 flex-shrink-0 {{ request()->routeIs('admin.orders.*') ? 'text-blue-600' : 'text-gray-400 group-hover:text-gray-600' }} transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
+                    </svg>
+                    Commandes
+                </a>
+
                 <!-- Collections -->
                 <a href="{{ route('admin.collections.index') }}" class="flex items-center px-3 py-3 text-base font-semibold rounded-xl {{ request()->routeIs('admin.collections.*') ? 'bg-blue-50 text-blue-700' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900' }} transition-all group">
                     <svg class="w-6 h-6 mr-3 flex-shrink-0 {{ request()->routeIs('admin.collections.*') ? 'text-blue-600' : 'text-gray-400 group-hover:text-gray-600' }} transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">

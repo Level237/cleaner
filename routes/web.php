@@ -45,6 +45,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::resource('products', ProductController::class)->except(['show']);
     Route::resource('products.variants', ProductVariantController::class)->except(['show']);
     Route::resource('collections', CollectionController::class)->except(['show']);
+    Route::resource('orders', \App\Http\Controllers\Admin\OrderController::class)->only(['index', 'show', 'update']);
     
     Route::get('/media', [\App\Http\Controllers\Admin\MediaController::class, 'index'])->name('media.index');
     Route::put('/media/{medium}', [\App\Http\Controllers\Admin\MediaController::class, 'update'])->name('media.update');
