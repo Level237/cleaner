@@ -19,6 +19,7 @@ Route::delete('/panier/supprimer', [CartController::class, 'remove'])->name('car
 Route::get('/commande', [App\Http\Controllers\CheckoutController::class, 'index'])->name('checkout.index');
 Route::post('/commande', [App\Http\Controllers\CheckoutController::class, 'process'])->name('checkout.process');
 Route::get('/commande/succes/{reference}', [App\Http\Controllers\CheckoutController::class, 'success'])->name('checkout.success');
+Route::get('/recherche', [\App\Http\Controllers\SearchController::class, 'index'])->name('search.index');
 
 
 

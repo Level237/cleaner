@@ -20,7 +20,7 @@
 
 
 <header x-data="{ 
-            mobileMenuOpen: false, 
+            mobileMenuOpen: false, searchOpen: false, 
             y: 0,
             isProduct: {{ !$isHome ? 'true' : 'false' }},
             get isTop() { return this.y <= 50; },
@@ -119,18 +119,14 @@
                 </div>
 
                 <!-- Search -->
-                <button class="{{ $textColorClass }} transition-colors">
+                <button type="button" @click.prevent="searchOpen = true" class="{{ $textColorClass }} transition-colors">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
                     </svg>
                 </button>
                 
                 <!-- Account -->
-                <a href="{{ route('login') }}" class="{{ $textColorClass }} transition-colors">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
-                    </svg>
-                </a>
+                
                 
                 <!-- Cart -->
                 <a href="{{ route('cart.index') }}" class="{{ $textColorClass }} transition-colors relative" 
@@ -156,65 +152,109 @@
     </div>
 
     <!-- Mobile Menu Overlay -->
-    <div x-show="mobileMenuOpen" 
-         x-transition:enter="transition-opacity ease-linear duration-300"
-         x-transition:enter-start="opacity-0"
-         x-transition:enter-end="opacity-100"
-         x-transition:leave="transition-opacity ease-linear duration-300"
-         x-transition:leave-start="opacity-100"
-         x-transition:leave-end="opacity-0"
-         class="fixed inset-0 z-40 bg-black/50 md:hidden" 
-         @click="mobileMenuOpen = false"
-         style="display: none;"></div>
+    <template x-teleport="body">
+        <div x-show="mobileMenuOpen" 
+             x-transition:enter="transition-opacity ease-linear duration-300"
+             x-transition:enter-start="opacity-0"
+             x-transition:enter-end="opacity-100"
+             x-transition:leave="transition-opacity ease-linear duration-300"
+             x-transition:leave-start="opacity-100"
+             x-transition:leave-end="opacity-0"
+             class="fixed inset-0 z-40 bg-black/50 md:hidden" 
+             @click="mobileMenuOpen = false"
+             style="display: none;"></div>
+    </template>
 
     <!-- Mobile Menu Panel (Slide from Right) -->
-    <div x-show="mobileMenuOpen" 
-         x-transition:enter="transition ease-in-out duration-300 transform"
-         x-transition:enter-start="translate-x-full"
-         x-transition:enter-end="translate-x-0"
-         x-transition:leave="transition ease-in-out duration-300 transform"
-         x-transition:leave-start="translate-x-0"
-         x-transition:leave-end="translate-x-full"
-         class="fixed inset-y-0 right-0 z-50 w-full max-w-sm bg-white overflow-y-auto md:hidden shadow-2xl"
-         style="display: none;">
-         
-        <div class="flex items-center justify-between p-4 border-b border-gray-100">
-            <span class="text-xl font-bold text-gray-900 font-serif">Mondays</span>
-            <button @click="mobileMenuOpen = false" class="text-gray-500 hover:text-brand-500 focus:outline-none p-2">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                </svg>
-            </button>
-        </div>
-
-        <div class="px-4 py-6 space-y-6">
-            <a href="{{ url('/') }}" class="block text-xl font-medium text-gray-900 hover:text-brand-500">Accueil</a>
-            
-            <div x-data="{ open: false }">
-                <div class="flex justify-between items-center w-full">
-                    <a href="{{ route('products.index') }}" class="text-xl font-medium text-gray-900 hover:text-brand-500">Boutique</a>
-                    <button @click="open = !open" class="p-2 text-gray-500 hover:text-brand-500">
-                        <svg class="w-5 h-5 transition-transform duration-200" :class="{'rotate-180': open}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-                    </button>
-                </div>
-                <div x-show="open" class="mt-4 pl-4 space-y-4 border-l-2 border-gray-100" style="display: none;">
-                    @foreach($categories as $category)
-                        <a href="{{ route('products.index', ['category' => $category->slug]) }}" class="block text-lg text-gray-600 hover:text-brand-500">{{ $category->name }}</a>
-                    @endforeach
-                </div>
+    <template x-teleport="body">
+        <div x-show="mobileMenuOpen" 
+             x-transition:enter="transition ease-in-out duration-300 transform"
+             x-transition:enter-start="translate-x-full"
+             x-transition:enter-end="translate-x-0"
+             x-transition:leave="transition ease-in-out duration-300 transform"
+             x-transition:leave-start="translate-x-0"
+             x-transition:leave-end="translate-x-full"
+             class="fixed inset-y-0 right-0 z-50 w-full max-w-sm bg-white overflow-y-auto md:hidden shadow-2xl"
+             style="display: none;">
+             
+            <div class="flex items-center justify-between p-4 border-b border-gray-100">
+                <span class="text-xl font-bold text-gray-900 font-serif">Mondays</span>
+                <button @click="mobileMenuOpen = false" class="text-gray-500 hover:text-brand-500 focus:outline-none p-2">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
             </div>
 
-            <a href="{{ route('collections.index') }}" class="block text-xl font-medium text-gray-900 hover:text-brand-500">Collections</a>
+            <div class="px-4 py-6 space-y-6">
+                <a href="{{ url('/') }}" class="block text-xl font-medium text-gray-900 hover:text-brand-500">Accueil</a>
+                
+                <div x-data="{ open: false }">
+                    <div class="flex justify-between items-center w-full">
+                        <a href="{{ route('products.index') }}" class="text-xl font-medium text-gray-900 hover:text-brand-500">Boutique</a>
+                        <button @click="open = !open" class="p-2 text-gray-500 hover:text-brand-500">
+                            <svg class="w-5 h-5 transition-transform duration-200" :class="{'rotate-180': open}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                        </button>
+                    </div>
+                    <div x-show="open" class="mt-4 pl-4 space-y-4 border-l-2 border-gray-100" style="display: none;">
+                        @foreach($categories as $category)
+                            <a href="{{ route('products.index', ['category' => $category->slug]) }}" class="block text-lg text-gray-600 hover:text-brand-500">{{ $category->name }}</a>
+                        @endforeach
+                    </div>
+                </div>
 
-            <a href="#" class="block text-xl font-medium text-gray-900 hover:text-brand-500">Notre Maison</a>
-            <a href="#" class="block text-xl font-medium text-gray-900 hover:text-brand-500">Journal</a>
-            <a href="#" class="block text-xl font-medium text-gray-900 hover:text-brand-500">Contact</a>
+                <a href="{{ route('collections.index') }}" class="block text-xl font-medium text-gray-900 hover:text-brand-500">Collections</a>
+
+                <a href="#" class="block text-xl font-medium text-gray-900 hover:text-brand-500">Notre Maison</a>
+                <a href="#" class="block text-xl font-medium text-gray-900 hover:text-brand-500">Journal</a>
+                <a href="#" class="block text-xl font-medium text-gray-900 hover:text-brand-500">Contact</a>
+            </div>
+            
+            <div class="absolute bottom-0 left-0 w-full p-6 border-t border-gray-100 bg-gray-50">
+                <a href="{{ route('login') }}" class="flex items-center justify-center w-full px-4 py-3 text-base font-medium text-white bg-brand-500 hover:bg-brand-600 rounded-xl transition-colors">
+                    Se connecter
+                </a>
+            </div>
         </div>
-        
-        <div class="absolute bottom-0 left-0 w-full p-6 border-t border-gray-100 bg-gray-50">
-            <a href="{{ route('login') }}" class="flex items-center justify-center w-full px-4 py-3 text-base font-medium text-white bg-brand-500 hover:bg-brand-600 rounded-xl transition-colors">
-                Se connecter
-            </a>
+    </template>
+
+    <!-- Search Overlay -->
+    <template x-teleport="body">
+        <div x-show="searchOpen" 
+             x-init="$watch('searchOpen', value => { if(value) setTimeout(() => $refs.searchInput.focus(), 100) })"
+             x-transition:enter="transition-opacity ease-linear duration-300"
+             x-transition:enter-start="opacity-0"
+             x-transition:enter-end="opacity-100"
+             x-transition:leave="transition-opacity ease-linear duration-300"
+             x-transition:leave-start="opacity-100"
+             x-transition:leave-end="opacity-0"
+             class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex flex-col items-center justify-center px-4"
+             @keydown.escape.window="searchOpen = false"
+             @click.self="searchOpen = false"
+             style="display: none;">
+            
+            <button @click="searchOpen = false" class="absolute top-6 right-6 text-white/70 hover:text-white">
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+
+            <div class="w-full max-w-3xl mx-auto">
+                <form action="{{ route('search.index') }}" method="GET" class="relative">
+                    <input type="text" name="q" placeholder="Rechercher (ex: Savon noir, Collection Été...)" 
+                           class="w-full bg-white/10 border-0 border-b-2 border-white/20 text-white placeholder-white/50 text-2xl md:text-4xl py-4 pl-0 pr-12 focus:ring-0 focus:border-[#d4f977] bg-transparent"
+                           x-ref="searchInput">
+                    <button type="submit" class="absolute inset-y-0 right-0 flex items-center text-[#d4f977] hover:text-white">
+                        <svg class="w-8 h-8 md:w-10 md:h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                    </button>
+                </form>
+                
+                <div class="mt-8 flex flex-wrap gap-3">
+                    <span class="text-white/50 text-sm">Populaire :</span>
+                    <a href="{{ route('search.index', ['q' => 'Bougies']) }}" class="text-white/80 hover:text-white text-sm bg-white/10 hover:bg-white/20 px-3 py-1 rounded-full transition-colors">Bougies</a>
+                    <a href="{{ route('search.index', ['q' => 'Savons']) }}" class="text-white/80 hover:text-white text-sm bg-white/10 hover:bg-white/20 px-3 py-1 rounded-full transition-colors">Savons</a>
+                    <a href="{{ route('search.index', ['q' => 'Naturel']) }}" class="text-white/80 hover:text-white text-sm bg-white/10 hover:bg-white/20 px-3 py-1 rounded-full transition-colors">Naturel</a>
+                </div>
+            </div>
         </div>
-    </div>
+    </template>
+
 </header>
