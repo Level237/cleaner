@@ -4,9 +4,17 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\CartController;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/boutique', [App\Http\Controllers\ProductController::class, 'index'])->name('products.index');
+Route::get('/collections', [App\Http\Controllers\CollectionController::class, 'index'])->name('collections.index');
 Route::get('/produits/{slug}', [App\Http\Controllers\ProductController::class, 'show'])->name('products.show');
+
+Route::get('/panier', [CartController::class, 'index'])->name('cart.index');
+Route::post('/panier/ajouter', [CartController::class, 'add'])->name('cart.add');
+Route::patch('/panier/modifier', [CartController::class, 'update'])->name('cart.update');
+Route::delete('/panier/supprimer', [CartController::class, 'remove'])->name('cart.remove');
 
 
 

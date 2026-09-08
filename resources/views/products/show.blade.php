@@ -106,48 +106,99 @@
                 </div>
 
                 <!-- Variants / Options (If any) -->
-                @if($product->variants->count() > 0)
-                <div class="mt-8 border-t border-gray-100 pt-8" x-data="{ selectedVariant: null }">
-                    <h3 class="text-sm font-medium text-gray-900">Format</h3>
-                    <div class="mt-4 grid grid-cols-3 gap-3">
-                        @foreach($product->variants as $variant)
-                        <button type="button" @click="selectedVariant = {{ $variant->id }}"
-                                :class="{'ring-2 ring-[#3ab54a] bg-green-50': selectedVariant === {{ $variant->id }}, 'ring-1 ring-gray-200 bg-white hover:bg-gray-50': selectedVariant !== {{ $variant->id }}}"
-                                class="rounded-xl p-3 flex flex-col items-center justify-center text-center transition-all">
-                            <span class="text-sm font-medium text-gray-900">{{ $variant->name }}</span>
-                            @if($variant->price)
-                                <span class="text-xs text-gray-500 mt-1">+ @price($variant->price)</span>
-                            @endif
-                        </button>
-                        @endforeach
-                    </div>
-                </div>
-                @endif
-
-                <form class="mt-8">
-                    <!-- Quantity & Buttons -->
-                    <div class="flex flex-col sm:flex-row gap-4" x-data="{ qty: 1 }">
-                        <div class="flex items-center border border-gray-200 rounded-xl bg-white p-1">
-                            <button type="button" @click="if(qty > 1) qty--" class="w-12 h-12 flex items-center justify-center text-gray-500 hover:text-[#1a2217] hover:bg-gray-100 rounded-lg transition-colors">
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4"></path></svg>
+                <div x-data="{ 
+                    selectedVariant: {{ $product->variants->count() > 0 ? $product->variants->first()->id : 'null' }},
+                    qty: 1,
+                    isAdding: false,
+                    addToCart() {
+                        this.isAdding = true;
+                        return fetch('{{ route('cart.add') }}', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                                'Accept': 'application/json'
+                            },
+                            body: JSON.stringify({
+                                product_id: {{ $product->id }},
+                                quantity: this.qty,
+                                variant_id: this.selectedVariant
+                            })
+                        })
+                        .then(res => res.json())
+                        .then(data => {
+                            this.isAdding = false;
+                            if (data.success) {
+                                // Dispatch event to update cart count in header
+                                window.dispatchEvent(new CustomEvent('cart-updated', { detail: { count: data.cartCount }}));
+                                
+                                const btn = this.$refs.addBtn;
+                                const originalText = btn.innerHTML;
+                                btn.innerHTML = '✔ Ajouté !';
+                                btn.classList.add('!bg-[#3ab54a]', '!text-white');
+                                
+                                // Optional: Redirect to cart if it's the 'commander maintenant' button
+                                // But for 'Ajouter', just show feedback
+                                setTimeout(() => {
+                                    btn.innerHTML = originalText;
+                                    btn.classList.remove('!bg-[#3ab54a]', '!text-white');
+                                }, 2000);
+                            }
+                        })
+                        .catch(err => {
+                            this.isAdding = false;
+                            alert('Une erreur est survenue.');
+                        });
+                    }
+                }">
+                    @if($product->variants->count() > 0)
+                    <div class="mt-8 border-t border-gray-100 pt-8">
+                        <h3 class="text-sm font-medium text-gray-900">Format</h3>
+                        <div class="mt-4 grid grid-cols-3 gap-3">
+                            @foreach($product->variants as $variant)
+                            <button type="button" @click="selectedVariant = {{ $variant->id }}"
+                                    :class="{'ring-2 ring-[#3ab54a] bg-green-50': selectedVariant === {{ $variant->id }}, 'ring-1 ring-gray-200 bg-white hover:bg-gray-50': selectedVariant !== {{ $variant->id }}}"
+                                    class="rounded-xl p-3 flex flex-col items-center justify-center text-center transition-all">
+                                <span class="text-sm font-medium text-gray-900">{{ $variant->name }}</span>
+                                @if($variant->price)
+                                    <span class="text-xs text-gray-500 mt-1">+ @price($variant->price)</span>
+                                @endif
                             </button>
-                            <input type="number" name="quantity" x-model="qty" class="w-12 text-center border-0 text-[#1a2217] font-bold focus:ring-0 p-0 text-lg" min="1">
-                            <button type="button" @click="qty++" class="w-12 h-12 flex items-center justify-center text-gray-500 hover:text-[#1a2217] hover:bg-gray-100 rounded-lg transition-colors">
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+                            @endforeach
+                        </div>
+                    </div>
+                    @endif
+
+                    <form @submit.prevent="addToCart" class="mt-8">
+                        <!-- Quantity & Buttons -->
+                        <div class="flex flex-col sm:flex-row gap-4">
+                            <div class="flex items-center border border-gray-200 rounded-xl bg-white p-1">
+                                <button type="button" @click="if(qty > 1) qty--" class="w-12 h-12 flex items-center justify-center text-gray-500 hover:text-[#1a2217] hover:bg-gray-100 rounded-lg transition-colors">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4"></path></svg>
+                                </button>
+                                <input type="number" name="quantity" x-model="qty" class="w-12 text-center border-0 text-[#1a2217] font-bold focus:ring-0 p-0 text-lg" min="1">
+                                <button type="button" @click="qty++" class="w-12 h-12 flex items-center justify-center text-gray-500 hover:text-[#1a2217] hover:bg-gray-100 rounded-lg transition-colors">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+                                </button>
+                            </div>
+                            
+                            <button type="submit" x-ref="addBtn" :disabled="isAdding" class="flex-1 bg-[#1a2217] text-white hover:bg-[#283324] disabled:opacity-70 px-8 py-4 rounded-xl font-bold text-lg flex items-center justify-center gap-2 transition-all transform active:scale-[0.98] shadow-lg shadow-black/10">
+                                <span x-show="isAdding" class="inline-block animate-spin mr-2">
+                                    <svg class="w-5 h-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                                </span>
+                                <span x-show="!isAdding" class="flex items-center gap-2">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+                                    Ajouter au panier
+                                </span>
                             </button>
                         </div>
-                        
-                        <button type="button" class="flex-1 bg-[#1a2217] text-white hover:bg-[#283324] px-8 py-4 rounded-xl font-bold text-lg flex items-center justify-center gap-2 transition-transform transform active:scale-[0.98] shadow-lg shadow-black/10">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
-                            Ajouter au panier
-                        </button>
-                    </div>
 
-                    <!-- Buy Now CTA -->
-                    <button type="button" class="mt-3 w-full bg-[#d4f977] text-[#1a2217] hover:bg-[#c2e666] px-8 py-4 rounded-xl font-bold text-lg transition-transform transform active:scale-[0.98] shadow-sm">
-                        Commander maintenant
-                    </button>
-                </form>
+                        <!-- Buy Now CTA -->
+                        <button type="button" @click="addToCart().then(() => window.location.href = '{{ route('cart.index') }}')" class="mt-3 w-full bg-[#d4f977] text-[#1a2217] hover:bg-[#c2e666] px-8 py-4 rounded-xl font-bold text-lg transition-transform transform active:scale-[0.98] shadow-sm">
+                            Commander maintenant
+                        </button>
+                    </form>
+                </div>
 
                 <!-- Trust Badges -->
                 <div class="mt-8 grid grid-cols-2 gap-4 border-t border-gray-100 pt-8">

@@ -11,10 +11,11 @@
         "AED" => ["flag" => "🇦🇪", "label" => "AED"],
     ];
     $availableCurrencies = collect($allCurrencies)->only(config("currency.available"))->toArray();
-    $isHome = request()->routeIs("home");
+    $isHome = request()->routeIs("home") || request()->routeIs("products.index");
     $textColorClass = !$isHome ? "text-[#1a2217] hover:text-[#3ab54a]" : "text-white/90 hover:text-white";
     $iconColorClass = !$isHome ? "text-[#1a2217] hover:text-[#3ab54a]" : "text-white/90 hover:text-white";
     $currentCurr = session("currency", config("currency.default"));
+    $cartCount = collect(session("cart", []))->sum("quantity");
 @endphp
 
 
@@ -50,7 +51,7 @@
                 
                 <!-- Boutique Dropdown -->
                 <div class="relative" x-data="{ open: false }" @mouseenter="open = true" @mouseleave="open = false">
-                    <a href="#" class="{{ $textColorClass }} font-medium text-base transition-colors inline-flex items-center">
+                    <a href="{{ route('products.index') }}" class="{{ $textColorClass }} font-medium text-base transition-colors inline-flex items-center">
                         Boutique
                         <svg class="ml-1 w-4 h-4 transition-transform duration-200" :class="{'rotate-180': open}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
                     </a>
@@ -65,34 +66,14 @@
                          style="display: none;">
                         <div class="bg-white border border-gray-100 shadow-xl rounded-2xl overflow-hidden py-2">
                             @foreach($categories as $category)
-                                <a href="#" class="block px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 hover:text-brand-500 transition-colors">{{ $category->name }}</a>
+                                <a href="{{ route('products.index', ['category' => $category->slug]) }}" class="block px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 hover:text-brand-500 transition-colors">{{ $category->name }}</a>
                             @endforeach
                         </div>
                     </div>
                 </div>
 
                 <!-- Collections Dropdown -->
-                <div class="relative" x-data="{ open: false }" @mouseenter="open = true" @mouseleave="open = false">
-                    <a href="#" class="{{ $textColorClass }} font-medium text-base transition-colors inline-flex items-center">
-                        Collections
-                        <svg class="ml-1 w-4 h-4 transition-transform duration-200" :class="{'rotate-180': open}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-                    </a>
-                    <div x-show="open" 
-                         x-transition:enter="transition ease-out duration-100"
-                         x-transition:enter-start="opacity-0 translate-y-1"
-                         x-transition:enter-end="opacity-100 translate-y-0"
-                         x-transition:leave="transition ease-in duration-75"
-                         x-transition:leave-start="opacity-100 translate-y-0"
-                         x-transition:leave-end="opacity-0 translate-y-1"
-                         class="absolute left-0 mt-0 pt-4 w-56 z-50" 
-                         style="display: none;">
-                        <div class="bg-white border border-gray-100 shadow-xl rounded-2xl overflow-hidden py-2">
-                            @foreach($collections as $collection)
-                                <a href="#" class="block px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 hover:text-brand-500 transition-colors">{{ $collection->name }}</a>
-                            @endforeach
-                        </div>
-                    </div>
-                </div>
+                <a href="{{ route('collections.index') }}" class="{{ $textColorClass }} font-medium text-base transition-colors">Collections</a>
 
                 <a href="#" class="{{ $textColorClass }} font-medium text-base transition-colors">Notre Maison</a>
                 <a href="#" class="{{ $textColorClass }} font-medium text-base transition-colors">Journal</a>
@@ -152,12 +133,14 @@
                 </a>
                 
                 <!-- Cart -->
-                <a href="#" class="{{ $textColorClass }} transition-colors relative">
+                <a href="{{ route('cart.index') }}" class="{{ $textColorClass }} transition-colors relative" 
+                   x-data="{ cartCount: {{ $cartCount }} }" 
+                   @cart-updated.window="cartCount = $event.detail.count">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path>
                     </svg>
                     <!-- Cart Badge -->
-                    <span class="absolute -top-1 -right-2 bg-brand-500 text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center">0</span>
+                    <span x-show="cartCount > 0" x-text="cartCount" class="absolute -top-1 -right-2 bg-[#3ab54a] text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center"></span>
                 </a>
 
                 <!-- Mobile menu button -->
@@ -208,28 +191,20 @@
             <a href="{{ url('/') }}" class="block text-xl font-medium text-gray-900 hover:text-brand-500">Accueil</a>
             
             <div x-data="{ open: false }">
-                <button @click="open = !open" class="flex justify-between items-center w-full text-left text-xl font-medium text-gray-900 hover:text-brand-500">
-                    Boutique
-                    <svg class="w-5 h-5 transition-transform duration-200" :class="{'rotate-180': open}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-                </button>
+                <div class="flex justify-between items-center w-full">
+                    <a href="{{ route('products.index') }}" class="text-xl font-medium text-gray-900 hover:text-brand-500">Boutique</a>
+                    <button @click="open = !open" class="p-2 text-gray-500 hover:text-brand-500">
+                        <svg class="w-5 h-5 transition-transform duration-200" :class="{'rotate-180': open}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </button>
+                </div>
                 <div x-show="open" class="mt-4 pl-4 space-y-4 border-l-2 border-gray-100" style="display: none;">
                     @foreach($categories as $category)
-                        <a href="#" class="block text-lg text-gray-600 hover:text-brand-500">{{ $category->name }}</a>
+                        <a href="{{ route('products.index', ['category' => $category->slug]) }}" class="block text-lg text-gray-600 hover:text-brand-500">{{ $category->name }}</a>
                     @endforeach
                 </div>
             </div>
 
-            <div x-data="{ open: false }">
-                <button @click="open = !open" class="flex justify-between items-center w-full text-left text-xl font-medium text-gray-900 hover:text-brand-500">
-                    Collections
-                    <svg class="w-5 h-5 transition-transform duration-200" :class="{'rotate-180': open}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-                </button>
-                <div x-show="open" class="mt-4 pl-4 space-y-4 border-l-2 border-gray-100" style="display: none;">
-                    @foreach($collections as $collection)
-                        <a href="#" class="block text-lg text-gray-600 hover:text-brand-500">{{ $collection->name }}</a>
-                    @endforeach
-                </div>
-            </div>
+            <a href="{{ route('collections.index') }}" class="block text-xl font-medium text-gray-900 hover:text-brand-500">Collections</a>
 
             <a href="#" class="block text-xl font-medium text-gray-900 hover:text-brand-500">Notre Maison</a>
             <a href="#" class="block text-xl font-medium text-gray-900 hover:text-brand-500">Journal</a>
