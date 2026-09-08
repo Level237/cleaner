@@ -7,6 +7,8 @@ use App\Models\Product;
 use App\Models\Category;
 use App\Models\Collection;
 use App\Models\ProductVariant;
+use App\Models\Contact;
+use App\Models\Order;
 use Illuminate\Http\Request;
 
 class DashboardController extends Controller
@@ -21,6 +23,9 @@ class DashboardController extends Controller
             'total_categories' => Category::count(),
             'total_collections' => Collection::count(),
             'total_variants' => ProductVariant::count(),
+            'unread_contacts' => Contact::where('is_read', false)->count(),
+            'total_contacts' => Contact::count(),
+            'total_orders' => Order::count(),
         ];
 
         // 2. Alertes SEO & Qualité (Le cœur du réacteur)
@@ -57,6 +62,11 @@ class DashboardController extends Controller
             ->take(5)
             ->get();
 
-        return view('admin.dashboard', compact('stats', 'alerts', 'recentProducts'));
+        // 4. Messages de contact récents
+        $recentContacts = Contact::latest()
+            ->take(5)
+            ->get();
+
+        return view('admin.dashboard', compact('stats', 'alerts', 'recentProducts', 'recentContacts'));
     }
 }

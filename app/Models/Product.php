@@ -111,6 +111,30 @@ class Product extends Model
     }
 
     /**
+     * Avis clients sur le produit.
+     */
+    public function reviews(): HasMany
+    {
+        return $this->hasMany(ProductReview::class)->where('is_approved', true)->latest();
+    }
+
+    /**
+     * Note moyenne des avis.
+     */
+    public function getAverageRatingAttribute(): float
+    {
+        return (float) round($this->reviews()->avg('rating') ?? 0, 1);
+    }
+
+    /**
+     * Nombre d'avis.
+     */
+    public function getReviewsCountAttribute(): int
+    {
+        return $this->reviews()->count();
+    }
+
+    /**
      * Images du produit.
      */
     public function media(): MorphMany

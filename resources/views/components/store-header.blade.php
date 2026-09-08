@@ -77,7 +77,7 @@
 
                 <a href="#" class="{{ $textColorClass }} font-medium text-base transition-colors">Notre Maison</a>
                 <a href="#" class="{{ $textColorClass }} font-medium text-base transition-colors">Journal</a>
-                <a href="#" class="{{ $textColorClass }} font-medium text-base transition-colors">Contact</a>
+                <a href="{{ route('contact.index') }}" class="{{ $textColorClass }} font-medium text-base transition-colors">Contact</a>
             </nav>
 
             <!-- Right: Icons -->
@@ -207,7 +207,7 @@
 
                 <a href="#" class="block text-xl font-medium text-gray-900 hover:text-brand-500">Notre Maison</a>
                 <a href="#" class="block text-xl font-medium text-gray-900 hover:text-brand-500">Journal</a>
-                <a href="#" class="block text-xl font-medium text-gray-900 hover:text-brand-500">Contact</a>
+                <a href="{{ route('contact.index') }}" class="block text-xl font-medium text-gray-900 hover:text-brand-500">Contact</a>
             </div>
             
             <div class="absolute bottom-0 left-0 w-full p-6 border-t border-gray-100 bg-gray-50">
@@ -239,20 +239,13 @@
 
             <div class="w-full max-w-3xl mx-auto">
                 <form action="{{ route('search.index') }}" method="GET" class="relative">
-                    <input type="text" name="q" placeholder="Rechercher (ex: Savon noir, Collection Été...)" 
+                    <input type="text" name="q" placeholder="Entrez un terme à rechercher..." 
                            class="w-full bg-white/10 border-0 border-b-2 border-white/20 text-white placeholder-white/50 text-2xl md:text-4xl py-4 pl-0 pr-12 focus:ring-0 focus:border-[#d4f977] bg-transparent"
                            x-ref="searchInput">
                     <button type="submit" class="absolute inset-y-0 right-0 flex items-center text-[#d4f977] hover:text-white">
                         <svg class="w-8 h-8 md:w-10 md:h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
                     </button>
                 </form>
-                
-                <div class="mt-8 flex flex-wrap gap-3">
-                    <span class="text-white/50 text-sm">Populaire :</span>
-                    <a href="{{ route('search.index', ['q' => 'Bougies']) }}" class="text-white/80 hover:text-white text-sm bg-white/10 hover:bg-white/20 px-3 py-1 rounded-full transition-colors">Bougies</a>
-                    <a href="{{ route('search.index', ['q' => 'Savons']) }}" class="text-white/80 hover:text-white text-sm bg-white/10 hover:bg-white/20 px-3 py-1 rounded-full transition-colors">Savons</a>
-                    <a href="{{ route('search.index', ['q' => 'Naturel']) }}" class="text-white/80 hover:text-white text-sm bg-white/10 hover:bg-white/20 px-3 py-1 rounded-full transition-colors">Naturel</a>
-                </div>
             </div>
         </div>
     </template>

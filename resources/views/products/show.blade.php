@@ -84,14 +84,22 @@
                 @endif
                 <h1 class="text-3xl sm:text-4xl md:text-5xl font-serif font-extrabold text-[#1a2217] tracking-tight">{{ $product->name }}</h1>
                 
-                <!-- Reviews -->
-                <div class="mt-4 flex items-center gap-2">
+                <!-- Reviews Summary Header -->
+                <div class="mt-4 flex items-center gap-3">
                     <div class="flex text-[#3ab54a]">
-                        @for($i = 0; $i < 5; $i++)
-                            <svg class="w-5 h-5 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                        @for($i = 1; $i <= 5; $i++)
+                            <svg class="w-5 h-5 {{ $i <= round($product->average_rating) ? 'fill-current' : 'text-gray-300 fill-current' }}" viewBox="0 0 20 20">
+                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                            </svg>
                         @endfor
                     </div>
-                    <a href="#reviews" class="text-sm font-medium text-gray-500 hover:text-brand-500">128 avis clients</a>
+                    <a href="#reviews" class="text-sm font-medium text-gray-600 hover:text-[#3ab54a] transition-colors">
+                        @if($product->reviews_count > 0)
+                            {{ $product->average_rating }} / 5 ({{ $product->reviews_count }} {{ Str::plural('avis', $product->reviews_count) }})
+                        @else
+                            Aucun avis (Soyez le premier !)
+                        @endif
+                    </a>
                 </div>
 
                 <div class="mt-6 flex items-end gap-3">
@@ -129,7 +137,6 @@
                         .then(data => {
                             this.isAdding = false;
                             if (data.success) {
-                                // Dispatch event to update cart count in header
                                 window.dispatchEvent(new CustomEvent('cart-updated', { detail: { count: data.cartCount }}));
                                 
                                 const btn = this.$refs.addBtn;
@@ -137,8 +144,6 @@
                                 btn.innerHTML = '✔ Ajouté !';
                                 btn.classList.add('!bg-[#3ab54a]', '!text-white');
                                 
-                                // Optional: Redirect to cart if it's the 'commander maintenant' button
-                                // But for 'Ajouter', just show feedback
                                 setTimeout(() => {
                                     btn.innerHTML = originalText;
                                     btn.classList.remove('!bg-[#3ab54a]', '!text-white');
@@ -237,7 +242,7 @@
                                 <svg class="h-5 w-5 text-gray-400 transition-transform duration-200" :class="{'rotate-180': active === 1}" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
                             </span>
                         </button>
-                        <div x-show="active === 1"  class="pt-4 text-sm text-gray-600 leading-relaxed" style="display: none;">
+                        <div x-show="active === 1" class="pt-4 text-sm text-gray-600 leading-relaxed" style="display: none;">
                             Ce mélange exclusif a été formulé pour vous apporter tous les bienfaits de la nature. Une synergie de plantes sélectionnées avec soin pour une efficacité optimale et un goût inoubliable.
                         </div>
                     </div>
@@ -248,12 +253,147 @@
                                 <svg class="h-5 w-5 text-gray-400 transition-transform duration-200" :class="{'rotate-180': active === 2}" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
                             </span>
                         </button>
-                        <div x-show="active === 2"  class="pt-4 text-sm text-gray-600 leading-relaxed" style="display: none;">
+                        <div x-show="active === 2" class="pt-4 text-sm text-gray-600 leading-relaxed" style="display: none;">
                             Infusez un sachet dans 250ml d'eau frémissante (90°C) pendant 3 à 5 minutes selon votre goût. Peut se consommer chaud ou glacé.
                         </div>
                     </div>
                 </div>
 
+            </div>
+        </div>
+        
+        <!-- SECTION AVIS CLIENTS & NOTATION -->
+        <div id="reviews" class="mt-20 pt-16 border-t border-gray-200">
+            <div class="max-w-5xl mx-auto">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-12">
+                    <div>
+                        <h2 class="text-3xl font-serif font-bold text-[#1a2217]">Avis Clients</h2>
+                        <p class="text-gray-500 text-sm mt-1">Ce que nos clients pensent de {{ $product->name }}</p>
+                    </div>
+
+                    <!-- Note Moyenne Global Banner -->
+                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex items-center gap-6">
+                        <div class="text-center">
+                            <span class="text-4xl font-extrabold text-[#1a2217]">{{ $product->average_rating }}</span>
+                            <span class="text-sm text-gray-400 font-bold">/ 5</span>
+                        </div>
+                        <div>
+                            <div class="flex text-[#3ab54a] mb-1">
+                                @for($i = 1; $i <= 5; $i++)
+                                    <svg class="w-5 h-5 {{ $i <= round($product->average_rating) ? 'fill-current' : 'text-gray-200 fill-current' }}" viewBox="0 0 20 20">
+                                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                                    </svg>
+                                @endfor
+                            </div>
+                            <span class="text-xs text-gray-500 font-medium">Basé sur {{ $product->reviews_count }} {{ Str::plural('avis', $product->reviews_count) }}</span>
+                        </div>
+                    </div>
+                </div>
+
+                @if(session('success'))
+                    <div class="mb-8 p-4 bg-emerald-50 border border-emerald-200 text-emerald-800 rounded-xl flex items-center gap-3">
+                        <svg class="w-5 h-5 text-emerald-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                        <span>{{ session('success') }}</span>
+                    </div>
+                @endif
+
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-10">
+                    
+                    <!-- Formulaire de dépôt d'avis -->
+                    <div class="lg:col-span-5">
+                        <div class="bg-white p-6 md:p-8 rounded-3xl shadow-sm border border-gray-100">
+                            <h3 class="text-xl font-bold text-[#1a2217] mb-2">Donnez votre avis</h3>
+                            <p class="text-xs text-gray-500 mb-6">Partagez votre expérience avec la communauté.</p>
+
+                            <form action="{{ route('products.reviews.store', $product->slug) }}" method="POST" x-data="{ rating: 5, hoverRating: 0 }" class="space-y-5">
+                                @csrf
+                                
+                                <!-- Notation par étoiles -->
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Votre note *</label>
+                                    <input type="hidden" name="rating" :value="rating">
+                                    <div class="flex items-center space-x-1 cursor-pointer">
+                                        <template x-for="star in 5">
+                                            <button type="button" 
+                                                    @click="rating = star" 
+                                                    @mouseenter="hoverRating = star" 
+                                                    @mouseleave="hoverRating = 0"
+                                                    class="focus:outline-none transition-transform transform hover:scale-110">
+                                                <svg class="w-8 h-8 transition-colors" 
+                                                     :class="(hoverRating || rating) >= star ? 'text-[#3ab54a] fill-current' : 'text-gray-200 fill-current'" 
+                                                     viewBox="0 0 20 20">
+                                                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                                                </svg>
+                                            </button>
+                                        </template>
+                                    </div>
+                                    @error('rating') <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span> @enderror
+                                </div>
+
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Votre Nom / Pseudo *</label>
+                                    <input type="text" name="reviewer_name" required value="{{ old('reviewer_name', auth()->user()->name ?? '') }}" placeholder="Ex: Marie D." class="w-full rounded-xl border-gray-200 shadow-sm focus:border-[#3ab54a] focus:ring-[#3ab54a]">
+                                    @error('reviewer_name') <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span> @enderror
+                                </div>
+
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Adresse Email *</label>
+                                    <input type="email" name="reviewer_email" required value="{{ old('reviewer_email', auth()->user()->email ?? '') }}" placeholder="exemple@email.com" class="w-full rounded-xl border-gray-200 shadow-sm focus:border-[#3ab54a] focus:ring-[#3ab54a]">
+                                    <p class="text-[11px] text-gray-400 mt-1">Votre email ne sera pas affiché publiquement.</p>
+                                    @error('reviewer_email') <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span> @enderror
+                                </div>
+
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Votre avis *</label>
+                                    <textarea name="comment" rows="4" required placeholder="Qu'avez-vous pensé de ce produit ?" class="w-full rounded-xl border-gray-200 shadow-sm focus:border-[#3ab54a] focus:ring-[#3ab54a]">{{ old('comment') }}</textarea>
+                                    @error('comment') <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span> @enderror
+                                </div>
+
+                                <button type="submit" class="w-full py-3.5 px-6 bg-[#1a2217] hover:bg-[#283324] text-white font-bold rounded-xl transition-colors shadow-sm">
+                                    Soumettre mon avis
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Liste des avis -->
+                    <div class="lg:col-span-7 space-y-4">
+                        @forelse($product->reviews as $review)
+                            <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 space-y-3">
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center space-x-3">
+                                        <div class="w-10 h-10 rounded-full bg-[#f4fbf5] text-[#3ab54a] font-bold flex items-center justify-center text-sm">
+                                            {{ strtoupper(substr($review->reviewer_name, 0, 1)) }}
+                                        </div>
+                                        <div>
+                                            <h4 class="font-bold text-[#1a2217] text-sm">{{ $review->reviewer_name }}</h4>
+                                            <span class="text-xs text-gray-400">{{ $review->created_at->diffForHumans() }}</span>
+                                        </div>
+                                    </div>
+                                    <div class="flex text-[#3ab54a]">
+                                        @for($i = 1; $i <= 5; $i++)
+                                            <svg class="w-4 h-4 {{ $i <= $review->rating ? 'fill-current' : 'text-gray-200 fill-current' }}" viewBox="0 0 20 20">
+                                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                                            </svg>
+                                        @endfor
+                                    </div>
+                                </div>
+                                <p class="text-gray-700 text-sm leading-relaxed pt-1">
+                                    {{ $review->comment }}
+                                </p>
+                            </div>
+                        @empty
+                            <div class="bg-white p-10 rounded-2xl border border-gray-100 text-center">
+                                <div class="w-16 h-16 bg-[#f4fbf5] text-[#3ab54a] rounded-full flex items-center justify-center mx-auto mb-3">
+                                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"></path></svg>
+                                </div>
+                                <h4 class="font-bold text-[#1a2217] mb-1">Aucun avis pour le moment</h4>
+                                <p class="text-sm text-gray-500">Soyez le premier à donner votre avis sur {{ $product->name }} !</p>
+                            </div>
+                        @endforelse
+                    </div>
+
+                </div>
             </div>
         </div>
         

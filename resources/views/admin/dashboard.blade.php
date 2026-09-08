@@ -6,7 +6,7 @@
     <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center w-full gap-4 pb-2">
         <div>
             <h2 class="text-3xl font-bold text-gray-900 tracking-tight">Dashboard</h2>
-            <p class="text-sm text-gray-500 mt-1">Aperçu analytique et santé de votre catalogue</p>
+            <p class="text-sm text-gray-500 mt-1">Aperçu analytique et santé de votre boutique</p>
         </div>
         <div class="flex items-center space-x-3">
             <div class="bg-white px-4 py-2.5 rounded-xl border border-gray-200 shadow-sm flex items-center text-sm font-medium text-gray-600">
@@ -28,8 +28,8 @@
 @section('content')
 <div class="w-full space-y-8">
     
-    {{-- SECTION 1 : KPIs GLOBAUX (Modern cards inspired by reference screenshot) --}}
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+    {{-- SECTION 1 : KPIs GLOBAUX --}}
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-5">
         <x-stat-card 
             title="Produits Publiés" 
             :value="$stats['published_products']" 
@@ -40,12 +40,12 @@
         />
 
         <x-stat-card 
-            title="En Brouillon" 
-            :value="$stats['draft_products']" 
-            subtitle="À finaliser" 
-            badge="Attente" 
-            badgeType="warning"
-            :icon="'<svg class=\'w-4 h-4 text-amber-600\' fill=\'none\' stroke=\'currentColor\' viewBox=\'0 0 24 24\'><path stroke-linecap=\'round\' stroke-linejoin=\'round\' stroke-width=\'2\' d=\'M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z\'/></svg>'"
+            title="Commandes" 
+            :value="$stats['total_orders']" 
+            subtitle="Toutes commandes" 
+            badge="Ventes" 
+            badgeType="neutral"
+            :icon="'<svg class=\'w-4 h-4 text-emerald-600\' fill=\'none\' stroke=\'currentColor\' viewBox=\'0 0 24 24\'><path stroke-linecap=\'round\' stroke-linejoin=\'round\' stroke-width=\'2\' d=\'M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z\'/></svg>'"
         />
 
         <x-stat-card 
@@ -64,6 +64,15 @@
             badge="Market" 
             badgeType="neutral"
             :icon="'<svg class=\'w-4 h-4 text-indigo-600\' fill=\'none\' stroke=\'currentColor\' viewBox=\'0 0 24 24\'><path stroke-linecap=\'round\' stroke-linejoin=\'round\' stroke-width=\'2\' d=\'M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10\'/></svg>'"
+        />
+
+        <x-stat-card 
+            title="Messages Contact" 
+            :value="$stats['total_contacts']" 
+            subtitle="{{ $stats['unread_contacts'] }} non lu(s)" 
+            badge="{{ $stats['unread_contacts'] > 0 ? 'Nouveau' : 'À jour' }}" 
+            badgeType="{{ $stats['unread_contacts'] > 0 ? 'warning' : 'success' }}"
+            :icon="'<svg class=\'w-4 h-4 text-amber-600\' fill=\'none\' stroke=\'currentColor\' viewBox=\'0 0 24 24\'><path stroke-linecap=\'round\' stroke-linejoin=\'round\' stroke-width=\'2\' d=\'M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z\'/></svg>'"
         />
     </div>
 
@@ -115,7 +124,7 @@
         <div class="lg:col-span-1 bg-white rounded-2xl shadow-sm border border-gray-100 p-6 flex flex-col justify-between">
             <div>
                 <h3 class="text-base font-bold text-gray-900 mb-1">Actions Rapides</h3>
-                <p class="text-xs text-gray-400 mb-5">Raccourcis de création de contenu</p>
+                <p class="text-xs text-gray-400 mb-5">Raccourcis de gestion</p>
                 
                 <div class="space-y-3">
                     <a href="{{ route('admin.products.create') }}" class="flex items-center justify-between p-3.5 bg-gray-50 hover:bg-blue-50/60 rounded-xl border border-gray-100 hover:border-blue-100 transition group">
@@ -147,61 +156,135 @@
                         </div>
                         <svg class="w-4 h-4 text-gray-400 group-hover:text-purple-600 group-hover:translate-x-0.5 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
                     </a>
+
+                    <a href="{{ route('admin.contacts.index') }}" class="flex items-center justify-between p-3.5 bg-gray-50 hover:bg-amber-50/60 rounded-xl border border-gray-100 hover:border-amber-100 transition group">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-8 h-8 rounded-lg bg-amber-100 text-amber-600 flex items-center justify-center">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                            </div>
+                            <span class="text-sm font-semibold text-gray-700 group-hover:text-amber-600 transition-colors">Messages de Contact</span>
+                        </div>
+                        <span class="text-xs font-bold px-2 py-0.5 rounded-full bg-amber-100 text-amber-800">{{ $stats['unread_contacts'] }} non lu(s)</span>
+                    </a>
                 </div>
             </div>
         </div>
 
         <!-- Activité Récente -->
-        <div class="lg:col-span-2 bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
-            <div class="flex justify-between items-center mb-4">
-                <div>
-                    <h3 class="text-base font-bold text-gray-900">Derniers produits modifiés</h3>
-                    <p class="text-xs text-gray-400">Activités récentes sur le catalogue</p>
+        <div class="lg:col-span-2 space-y-6">
+            
+            <!-- Produits récents -->
+            <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+                <div class="flex justify-between items-center mb-4">
+                    <div>
+                        <h3 class="text-base font-bold text-gray-900">Derniers produits modifiés</h3>
+                        <p class="text-xs text-gray-400">Activités récentes sur le catalogue</p>
+                    </div>
+                    <a href="{{ route('admin.products.index') }}" class="text-xs font-semibold text-blue-600 hover:text-blue-800">Voir tout →</a>
                 </div>
-                <a href="{{ route('admin.products.index') }}" class="text-xs font-semibold text-blue-600 hover:text-blue-800">Voir tout →</a>
+
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-100">
+                        <thead>
+                            <tr class="text-left text-xs font-semibold text-gray-400 uppercase tracking-wider">
+                                <th class="pb-3 pl-1">Produit</th>
+                                <th class="pb-3">Statut</th>
+                                <th class="pb-3">Catégorie</th>
+                                <th class="pb-3 text-right pr-1">Modifié le</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-100 text-sm">
+                            @forelse($recentProducts as $product)
+                                <tr class="hover:bg-gray-50/50 transition">
+                                    <td class="py-3 pl-1 font-medium text-gray-900">
+                                        <a href="{{ route('admin.products.edit', $product) }}" class="hover:text-blue-600 transition-colors">
+                                            {{ $product->name }}
+                                        </a>
+                                    </td>
+                                    <td class="py-3">
+                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium 
+                                            {{ $product->status === 'published' ? 'bg-emerald-50 text-emerald-700 border border-emerald-100' : 'bg-amber-50 text-amber-700 border border-amber-100' }}">
+                                            {{ $product->status === 'published' ? 'Publié' : 'Brouillon' }}
+                                        </span>
+                                    </td>
+                                    <td class="py-3 text-gray-500 text-xs font-medium">
+                                        {{ $product->primaryCategory->name ?? '-' }}
+                                    </td>
+                                    <td class="py-3 text-right pr-1 text-xs text-gray-400">
+                                        {{ $product->updated_at->diffForHumans() }}
+                                    </td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="4" class="py-6 text-center text-xs text-gray-400">
+                                        Aucun produit enregistré pour le moment.
+                                    </td>
+                                </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </div>
             </div>
 
-            <div class="overflow-x-auto">
-                <table class="min-w-full divide-y divide-gray-100">
-                    <thead>
-                        <tr class="text-left text-xs font-semibold text-gray-400 uppercase tracking-wider">
-                            <th class="pb-3 pl-1">Produit</th>
-                            <th class="pb-3">Statut</th>
-                            <th class="pb-3">Catégorie</th>
-                            <th class="pb-3 text-right pr-1">Modifié le</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-gray-100 text-sm">
-                        @forelse($recentProducts as $product)
-                            <tr class="hover:bg-gray-50/50 transition">
-                                <td class="py-3 pl-1 font-medium text-gray-900">
-                                    <a href="{{ route('admin.products.edit', $product) }}" class="hover:text-blue-600 transition-colors">
-                                        {{ $product->name }}
-                                    </a>
-                                </td>
-                                <td class="py-3">
-                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium 
-                                        {{ $product->status === 'published' ? 'bg-emerald-50 text-emerald-700 border border-emerald-100' : 'bg-amber-50 text-amber-700 border border-amber-100' }}">
-                                        {{ $product->status === 'published' ? 'Publié' : 'Brouillon' }}
-                                    </span>
-                                </td>
-                                <td class="py-3 text-gray-500 text-xs font-medium">
-                                    {{ $product->primaryCategory->name ?? '-' }}
-                                </td>
-                                <td class="py-3 text-right pr-1 text-xs text-gray-400">
-                                    {{ $product->updated_at->diffForHumans() }}
-                                </td>
+            <!-- Messages de contact récents -->
+            <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+                <div class="flex justify-between items-center mb-4">
+                    <div>
+                        <h3 class="text-base font-bold text-gray-900">Derniers messages reçus</h3>
+                        <p class="text-xs text-gray-400">Demandes de contact récentes de vos clients</p>
+                    </div>
+                    <a href="{{ route('admin.contacts.index') }}" class="text-xs font-semibold text-blue-600 hover:text-blue-800">Voir tout →</a>
+                </div>
+
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-100">
+                        <thead>
+                            <tr class="text-left text-xs font-semibold text-gray-400 uppercase tracking-wider">
+                                <th class="pb-3 pl-1">Expéditeur</th>
+                                <th class="pb-3">Sujet</th>
+                                <th class="pb-3">Statut</th>
+                                <th class="pb-3 text-right pr-1">Date</th>
                             </tr>
-                        @empty
-                            <tr>
-                                <td colspan="4" class="py-6 text-center text-xs text-gray-400">
-                                    Aucun produit enregistré pour le moment.
-                                </td>
-                            </tr>
-                        @endforelse
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody class="divide-y divide-gray-100 text-sm">
+                            @forelse($recentContacts as $contact)
+                                <tr class="hover:bg-gray-50/50 transition">
+                                    <td class="py-3 pl-1 font-medium text-gray-900">
+                                        <a href="{{ route('admin.contacts.show', $contact) }}" class="hover:text-blue-600 transition-colors">
+                                            {{ $contact->name }}
+                                        </a>
+                                        <div class="text-xs text-gray-400 font-normal">{{ $contact->email }}</div>
+                                    </td>
+                                    <td class="py-3 text-gray-600 text-xs">
+                                        {{ Str::limit($contact->subject ?? 'Sans sujet', 30) }}
+                                    </td>
+                                    <td class="py-3">
+                                        @if(!$contact->is_read)
+                                            <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold bg-amber-100 text-amber-800">
+                                                Nouveau
+                                            </span>
+                                        @else
+                                            <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-600">
+                                                Lu
+                                            </span>
+                                        @endif
+                                    </td>
+                                    <td class="py-3 text-right pr-1 text-xs text-gray-400">
+                                        {{ $contact->created_at->diffForHumans() }}
+                                    </td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="4" class="py-6 text-center text-xs text-gray-400">
+                                        Aucun message de contact reçu.
+                                    </td>
+                                </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </div>
             </div>
+
         </div>
 
     </div>

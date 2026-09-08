@@ -11,6 +11,7 @@ Route::get('/boutique', [App\Http\Controllers\ProductController::class, 'index']
 Route::get('/collections', [App\Http\Controllers\CollectionController::class, 'index'])->name('collections.index');
 Route::get('/collections/{slug}', [App\Http\Controllers\CollectionController::class, 'show'])->name('collections.show');
 Route::get('/produits/{slug}', [App\Http\Controllers\ProductController::class, 'show'])->name('products.show');
+Route::post('/produits/{slug}/avis', [App\Http\Controllers\ProductController::class, 'storeReview'])->name('products.reviews.store');
 
 Route::get('/panier', [CartController::class, 'index'])->name('cart.index');
 Route::post('/panier/ajouter', [CartController::class, 'add'])->name('cart.add');
@@ -20,6 +21,9 @@ Route::get('/commande', [App\Http\Controllers\CheckoutController::class, 'index'
 Route::post('/commande', [App\Http\Controllers\CheckoutController::class, 'process'])->name('checkout.process');
 Route::get('/commande/succes/{reference}', [App\Http\Controllers\CheckoutController::class, 'success'])->name('checkout.success');
 Route::get('/recherche', [\App\Http\Controllers\SearchController::class, 'index'])->name('search.index');
+
+Route::get('/contact', [\App\Http\Controllers\ContactController::class, 'index'])->name('contact.index');
+Route::post('/contact', [\App\Http\Controllers\ContactController::class, 'store'])->name('contact.store');
 
 
 
@@ -47,6 +51,11 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::resource('products.variants', ProductVariantController::class)->except(['show']);
     Route::resource('collections', CollectionController::class)->except(['show']);
     Route::resource('orders', \App\Http\Controllers\Admin\OrderController::class)->only(['index', 'show', 'update']);
+    Route::resource('contacts', \App\Http\Controllers\Admin\ContactController::class)->only(['index', 'show', 'destroy']);
+    
+    Route::get('/reviews', [\App\Http\Controllers\Admin\ReviewController::class, 'index'])->name('reviews.index');
+    Route::patch('/reviews/{review}/toggle', [\App\Http\Controllers\Admin\ReviewController::class, 'toggleApproval'])->name('reviews.toggle');
+    Route::delete('/reviews/{review}', [\App\Http\Controllers\Admin\ReviewController::class, 'destroy'])->name('reviews.destroy');
     
     Route::get('/media', [\App\Http\Controllers\Admin\MediaController::class, 'index'])->name('media.index');
     Route::put('/media/{medium}', [\App\Http\Controllers\Admin\MediaController::class, 'update'])->name('media.update');
