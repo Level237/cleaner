@@ -1,9 +1,16 @@
 @extends('layouts.store')
 
 @section('content')
-<div class="bg-[#F8F9F5] min-h-screen pt-32 pb-24">
+<!-- Hero Section Collections -->
+<div class="relative w-full bg-[#d4f977] pt-32 pb-24 flex items-center justify-center">
+    <div class="relative z-20 text-center px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto">
+        <h1 class="text-4xl md:text-5xl lg:text-6xl font-serif font-extrabold text-[#1a2217] mb-6">Nos collections</h1>
+        <div class="w-16 h-1 bg-[#1a2217] mx-auto rounded-full"></div>
+    </div>
+</div>
+
+<div class="bg-[#F8F9F5] py-24 min-h-screen">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h1 class="text-4xl font-serif font-extrabold text-[#1a2217] mb-12 text-center">Nos Collections</h1>
         
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
             @forelse($collections as $collection)
