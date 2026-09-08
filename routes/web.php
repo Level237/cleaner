@@ -9,6 +9,7 @@ use App\Http\Controllers\CartController;
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/boutique', [App\Http\Controllers\ProductController::class, 'index'])->name('products.index');
 Route::get('/collections', [App\Http\Controllers\CollectionController::class, 'index'])->name('collections.index');
+Route::get('/collections/{slug}', [App\Http\Controllers\CollectionController::class, 'show'])->name('collections.show');
 Route::get('/produits/{slug}', [App\Http\Controllers\ProductController::class, 'show'])->name('products.show');
 
 Route::get('/panier', [CartController::class, 'index'])->name('cart.index');

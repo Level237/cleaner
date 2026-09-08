@@ -2,7 +2,7 @@
 
 @section('content')
 <!-- Hero Section Collections -->
-<div class="relative w-full bg-[#d4f977] pt-32 pb-24 flex items-center justify-center">
+<div class="relative w-full bg-[#d4f977] pt-32  pb-24 flex items-center justify-center">
     <div class="relative z-20 text-center px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto">
         <h1 class="text-4xl md:text-5xl lg:text-6xl font-serif font-extrabold text-[#1a2217] mb-6">Nos collections</h1>
         <div class="w-16 h-1 bg-[#1a2217] mx-auto rounded-full"></div>
@@ -14,7 +14,7 @@
         
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
             @forelse($collections as $collection)
-                <div class="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden group cursor-pointer hover:shadow-md transition-shadow">
+                <a href="{{ route('collections.show', $collection->slug) }}" class="block bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden group cursor-pointer hover:shadow-md transition-shadow">
                     <div class="aspect-w-16 aspect-h-10 bg-gray-100 relative overflow-hidden">
                         @if($collection->mainImage->first())
                             <img src="{{ asset('storage/' . $collection->mainImage->first()->path) }}" alt="{{ $collection->name }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
@@ -32,7 +32,7 @@
                             <svg class="w-4 h-4 ml-1 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
                         </div>
                     </div>
-                </div>
+                </a>
             @empty
                 <div class="col-span-full text-center py-12">
                     <p class="text-gray-500 text-lg">Aucune collection disponible pour le moment.</p>
