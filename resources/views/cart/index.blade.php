@@ -95,7 +95,7 @@
                         </dl>
 
                         <div class="mt-8">
-                            <a href="#" class="w-full bg-[#1a2217] text-white hover:bg-[#283324] px-8 py-4 rounded-xl font-bold text-lg flex items-center justify-center gap-2 transition-transform transform active:scale-[0.98] shadow-lg shadow-black/10">
+                            <a href="{{ route('checkout.index') }}" class="w-full bg-[#1a2217] text-white hover:bg-[#283324] px-8 py-4 rounded-xl font-bold text-lg flex items-center justify-center gap-2 transition-transform transform active:scale-[0.98] shadow-lg shadow-black/10">
                                 Procéder au paiement
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
                             </a>

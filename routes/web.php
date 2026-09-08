@@ -16,6 +16,9 @@ Route::get('/panier', [CartController::class, 'index'])->name('cart.index');
 Route::post('/panier/ajouter', [CartController::class, 'add'])->name('cart.add');
 Route::patch('/panier/modifier', [CartController::class, 'update'])->name('cart.update');
 Route::delete('/panier/supprimer', [CartController::class, 'remove'])->name('cart.remove');
+Route::get('/commande', [App\Http\Controllers\CheckoutController::class, 'index'])->name('checkout.index');
+Route::post('/commande', [App\Http\Controllers\CheckoutController::class, 'process'])->name('checkout.process');
+Route::get('/commande/succes/{reference}', [App\Http\Controllers\CheckoutController::class, 'success'])->name('checkout.success');
 
 
 
