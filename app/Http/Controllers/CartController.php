@@ -5,11 +5,16 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use App\Models\ProductVariant;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\View;
 
 class CartController extends Controller
 {
     public function index()
     {
+        View::share('seoTitle', 'Mon Panier — Révisez vos articles | ' . config('app.name'));
+        View::share('seoDescription', 'Consultez votre panier d\'achats, ajustez les quantités de vos thés bien-être Cleaner et préparez votre commande.');
+        View::share('seoImage', asset('assets/logo.png'));
+
         $cart = session()->get('cart', []);
         
         $cartItems = [];

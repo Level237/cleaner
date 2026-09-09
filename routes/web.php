@@ -26,6 +26,7 @@ Route::get('/contact', [\App\Http\Controllers\ContactController::class, 'index']
 Route::post('/contact', [\App\Http\Controllers\ContactController::class, 'store'])->name('contact.store');
 
 Route::get('/notre-maison', [\App\Http\Controllers\AboutController::class, 'index'])->name('about');
+Route::get('/faq', [\App\Http\Controllers\FaqController::class, 'index'])->name('faq');
 
 
 

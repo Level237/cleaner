@@ -12,17 +12,23 @@
     $title = $title
         ?? $model?->seo_title
         ?? (isset($model?->name)
-            ? $model->name . ' | ' . $appName
+            ? $model->name . ' — Thés Bien-être | ' . $appName
             : $appName . ' — Thés bien-être détox, minceur & énergie');
 
     $description = $description
         ?? $model?->seo_description
         ?? 'Cleaner, maison de thés bien-être : thés détox, minceur, ventre plat et fraîcheur. Des recettes 100 % naturelles pour votre rituel quotidien.';
 
+    $defaultOgImage = asset('assets/logo.png');
+
     $image = $image
         ?? (isset($model?->og_image_path) && $model->og_image_path
             ? asset('storage/' . $model->og_image_path)
-            : asset('images/og/default.webp'));
+            : (isset($model?->mainImage?->file_path) && $model->mainImage->file_path
+                ? asset('storage/' . $model->mainImage->file_path)
+                : (isset($model?->image_path) && $model->image_path
+                    ? asset('storage/' . $model->image_path)
+                    : $defaultOgImage)));
 
     $canonical = $model?->canonical_url ?: url()->current();
 

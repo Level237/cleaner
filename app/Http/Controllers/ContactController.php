@@ -13,7 +13,9 @@ class ContactController extends Controller
      */
     public function index()
     {
-        View::share('seoTitle', 'Contactez-nous | ' . config('app.name'));
+        View::share('seoTitle', 'Contactez-nous & Assistance Client | ' . config('app.name'));
+        View::share('seoDescription', 'Une question sur nos thés bien-être, vos commandes ou nos conseils de préparation ? L\'équipe Cleaner est à votre écoute par message ou WhatsApp.');
+        View::share('seoImage', asset('assets/logo.png'));
         return view('contact.index');
     }
 

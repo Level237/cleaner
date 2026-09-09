@@ -14,7 +14,9 @@ class HomeController extends Controller
      */
     public function index()
     {
-        View::share('seoTitle', config('app.name') . ' — Thés bien-être détox, minceur & énergie');
+        View::share('seoTitle', 'Cleaner — Thés bien-être détox, minceur & énergie');
+        View::share('seoDescription', 'Découvrez Cleaner, votre maison de thés bien-être d\'exception. Thés détox, infusions minceur, énergie et relaxation 100% naturelles pour votre rituel quotidien.');
+        View::share('seoImage', asset('assets/home.png'));
 
         // Fetch categories with their main image for the categories section
         $featuredCategories = Category::with('mainImage')->get();

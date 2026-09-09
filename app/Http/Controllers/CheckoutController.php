@@ -9,11 +9,16 @@ use App\Models\ProductVariant;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\View;
 
 class CheckoutController extends Controller
 {
     public function index()
     {
+        View::share('seoTitle', 'Paiement Sécurisé & Finalisation | ' . config('app.name'));
+        View::share('seoDescription', 'Finalisez votre commande de thés bien-être Cleaner en toute sécurité.');
+        View::share('seoImage', asset('assets/logo.png'));
+
         $cart = session()->get('cart', []);
         
         if (empty($cart)) {
@@ -153,9 +158,9 @@ class CheckoutController extends Controller
     {
         $order = Order::where('reference', $reference)->firstOrFail();
         
-        // Empêcher l'accès si la commande n'appartient pas à l'utilisateur connecté 
-        // ou si la session ne correspond pas. Pour un invité, on se base juste sur la ref pour l'instant.
-        // En vrai production, on pourrait ajouter un token de session.
+        View::share('seoTitle', 'Commande Confirmée | ' . config('app.name'));
+        View::share('seoDescription', 'Merci pour votre commande chez Cleaner ! Retrouvez le récapitulatif de votre achat.');
+        View::share('seoImage', asset('assets/logo.png'));
         
         return view('checkout.success', compact('order'));
     }

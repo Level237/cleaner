@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <x-seo :model="$seoModel ?? null" :title="$seoTitle ?? null" />
+        <x-seo :model="$seoModel ?? null" :title="$seoTitle ?? null" :description="$seoDescription ?? null" :image="$seoImage ?? null" />
 
 
 

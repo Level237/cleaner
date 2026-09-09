@@ -23,18 +23,25 @@ class ProductController extends Controller
         $products = $query->paginate(12)->withQueryString();
 
         View::share('seoTitle', 'Boutique — Tous nos thés bien-être & accessoires | ' . config('app.name'));
+        View::share('seoDescription', 'Explorez l\'intégralité de nos thés bien-être, mélanges détox, infusions minceur et accessoires de dégustation. Ingrédients 100% naturels.');
+        View::share('seoImage', asset('assets/hero1.png'));
         
         return view('products.index', compact('products', 'categories'));
     }
 
     public function show($slug)
     {
-        $product = Product::with(['media', 'variants', 'reviews'])
+        $product = Product::with(['media', 'variants', 'reviews', 'mainImage'])
             ->where('slug', $slug)
             ->published()
             ->firstOrFail();
 
         View::share('seoModel', $product);
+        View::share('seoTitle', $product->seo_title ?: $product->name . ' — Thés Bien-être | ' . config('app.name'));
+        View::share('seoDescription', $product->seo_description ?: \Illuminate\Support\Str::limit(strip_tags($product->short_description ?: $product->description), 155));
+        if ($product->mainImage?->file_path) {
+            View::share('seoImage', asset('storage/' . $product->mainImage->file_path));
+        }
 
         return view('products.show', compact('product'));
     }

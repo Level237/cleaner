@@ -11,7 +11,9 @@ class CollectionController extends Controller
     {
         $collections = Collection::visible()->get();
 
-        View::share('seoTitle', 'Nos Collections | ' . config('app.name'));
+        View::share('seoTitle', 'Nos Collections de Thés & Infusions Bien-être | ' . config('app.name'));
+        View::share('seoDescription', 'Découvrez nos collections thématiques : Détox & Ventre Plat, Énergie & Vitalité, Relaxation & Sommeil. Des rituels sur-mesure pour votre corps.');
+        View::share('seoImage', asset('assets/maison.png'));
 
         return view('collections.index', compact('collections'));
     }
@@ -29,6 +31,11 @@ class CollectionController extends Controller
             ->paginate(12);
 
         View::share('seoModel', $collection);
+        View::share('seoTitle', $collection->seo_title ?: $collection->name . ' — Collection Exclusive | ' . config('app.name'));
+        View::share('seoDescription', $collection->seo_description ?: \Illuminate\Support\Str::limit(strip_tags($collection->description), 155));
+        if ($collection->image_path) {
+            View::share('seoImage', asset('storage/' . $collection->image_path));
+        }
 
         return view('collections.show', compact('collection', 'products'));
     }
