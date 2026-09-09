@@ -77,6 +77,7 @@
 
                 <a href="{{ route('about') }}" class="{{ $textColorClass }} font-medium text-base transition-colors">Notre Maison</a>
                 <a href="{{ route('contact.index') }}" class="{{ $textColorClass }} font-medium text-base transition-colors">Contact</a>
+                <a href="{{ route('faq') }}" class="{{ $textColorClass }} font-medium text-base transition-colors">FAQ</a>
             </nav>
 
             <!-- Right: Icons -->
@@ -177,7 +178,9 @@
              style="display: none;">
              
             <div class="flex items-center justify-between p-4 border-b border-gray-100">
-                <span class="text-xl font-bold text-gray-900 font-serif">Mondays</span>
+                <a href="{{ url('/') }}">
+                    <img src="{{ asset('assets/logo.png') }}" alt="Cleaner Logo" class="h-16 w-auto object-contain">
+                </a>
                 <button @click="mobileMenuOpen = false" class="text-gray-500 hover:text-brand-500 focus:outline-none p-2">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
@@ -206,13 +209,10 @@
 
                 <a href="{{ route('about') }}" class="block text-xl font-medium text-gray-900 hover:text-brand-500">Notre Maison</a>
                 <a href="{{ route('contact.index') }}" class="block text-xl font-medium text-gray-900 hover:text-brand-500">Contact</a>
+                <a href="{{ route('faq') }}" class="block text-xl font-medium text-gray-900 hover:text-brand-500">FAQ</a>
             </div>
             
-            <div class="absolute bottom-0 left-0 w-full p-6 border-t border-gray-100 bg-gray-50">
-                <a href="{{ route('login') }}" class="flex items-center justify-center w-full px-4 py-3 text-base font-medium text-white bg-brand-500 hover:bg-brand-600 rounded-xl transition-colors">
-                    Se connecter
-                </a>
-            </div>
+
         </div>
     </template>
 

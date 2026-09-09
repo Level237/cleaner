@@ -85,6 +85,14 @@
                     Avis Clients
                 </a>
 
+                <!-- FAQ -->
+                <a href="{{ route('admin.faqs.index') }}" class="flex items-center px-3 py-3 text-base font-semibold rounded-xl {{ request()->routeIs('admin.faqs.*') ? 'bg-blue-50 text-blue-700' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900' }} transition-all group">
+                    <svg class="w-6 h-6 mr-3 flex-shrink-0 {{ request()->routeIs('admin.faqs.*') ? 'text-blue-600' : 'text-gray-400 group-hover:text-gray-600' }} transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                    FAQ
+                </a>
+
                 <div class="mt-8 mb-4 px-3">
                     <div class="text-sm font-semibold text-gray-400 uppercase tracking-wider">Système</div>
                 </div>

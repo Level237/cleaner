@@ -142,7 +142,7 @@
              x-transition:enter="transition ease-out duration-300"
              x-transition:enter-start="opacity-0 translate-y-2"
              x-transition:enter-end="opacity-100 translate-y-0"
-             class="absolute right-13 sm:right-14 top-1/2 -translate-y-1/2 bg-[#1a2217] text-white text-[11px] sm:text-xs py-1.5 px-3 sm:py-2 sm:px-3.5 rounded-2xl shadow-xl whitespace-nowrap flex items-center gap-2 border border-[#d4f977]/20 pointer-events-auto">
+             class="absolute max-sm:hidden right-13 sm:right-14 top-1/2 -translate-y-1/2 bg-[#1a2217] text-white text-[11px] sm:text-xs py-1.5 px-3 sm:py-2 sm:px-3.5 rounded-2xl shadow-xl whitespace-nowrap flex items-center gap-2 border border-[#d4f977]/20 pointer-events-auto">
             <span>Une question ?</span>
             <button @click.stop="showBadge = false" class="text-gray-400 hover:text-white">
                 <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
