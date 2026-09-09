@@ -75,8 +75,7 @@
                 <!-- Collections Dropdown -->
                 <a href="{{ route('collections.index') }}" class="{{ $textColorClass }} font-medium text-base transition-colors">Collections</a>
 
-                <a href="#" class="{{ $textColorClass }} font-medium text-base transition-colors">Notre Maison</a>
-                <a href="#" class="{{ $textColorClass }} font-medium text-base transition-colors">Journal</a>
+                <a href="{{ route('about') }}" class="{{ $textColorClass }} font-medium text-base transition-colors">Notre Maison</a>
                 <a href="{{ route('contact.index') }}" class="{{ $textColorClass }} font-medium text-base transition-colors">Contact</a>
             </nav>
 
@@ -205,8 +204,7 @@
 
                 <a href="{{ route('collections.index') }}" class="block text-xl font-medium text-gray-900 hover:text-brand-500">Collections</a>
 
-                <a href="#" class="block text-xl font-medium text-gray-900 hover:text-brand-500">Notre Maison</a>
-                <a href="#" class="block text-xl font-medium text-gray-900 hover:text-brand-500">Journal</a>
+                <a href="{{ route('about') }}" class="block text-xl font-medium text-gray-900 hover:text-brand-500">Notre Maison</a>
                 <a href="{{ route('contact.index') }}" class="block text-xl font-medium text-gray-900 hover:text-brand-500">Contact</a>
             </div>
             

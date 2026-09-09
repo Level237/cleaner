@@ -25,6 +25,8 @@ Route::get('/recherche', [\App\Http\Controllers\SearchController::class, 'index'
 Route::get('/contact', [\App\Http\Controllers\ContactController::class, 'index'])->name('contact.index');
 Route::post('/contact', [\App\Http\Controllers\ContactController::class, 'store'])->name('contact.store');
 
+Route::get('/notre-maison', [\App\Http\Controllers\AboutController::class, 'index'])->name('about');
+
 
 
 use App\Http\Controllers\Admin\CategoryController;

@@ -31,7 +31,7 @@ export default {
                     200: '#cbeed3',
                     300: '#a0dfaf',
                     400: '#6dc984',
-                    500: '#3ab54a', // Custom brand color (requested by user)
+                    500: '#3ab54a',
                     600: '#2a9638',
                     700: '#24772e',
                     800: '#205f28',
@@ -40,7 +40,9 @@ export default {
                 }
             },
             fontFamily: {
-                sans: ['Figtree', ...defaultTheme.fontFamily.sans],
+                sans: ['Manrope', ...defaultTheme.fontFamily.sans],
+                serif: ['Fraunces', ...defaultTheme.fontFamily.serif],
+                display: ['Fraunces', ...defaultTheme.fontFamily.serif],
             },
         },
     },
