@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Contact;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\View;
 
 class ContactController extends Controller
 {
@@ -12,6 +13,7 @@ class ContactController extends Controller
      */
     public function index()
     {
+        View::share('seoTitle', 'Contactez-nous | ' . config('app.name'));
         return view('contact.index');
     }
 

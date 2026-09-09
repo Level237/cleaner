@@ -399,4 +399,6 @@
         
     </div>
 </div>
+
+@include('partials.schema.product')
 @endsection

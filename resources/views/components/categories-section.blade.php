@@ -24,7 +24,7 @@
                     $image = $category->mainImage->first();
                 @endphp
 
-                <a href="{{ url('/boutique/' . $category->slug) }}"
+                <a href="{{ route('products.index', ['category' => $category->slug]) }}"
                    class="group relative overflow-hidden rounded-[2rem] shadow-sm hover:shadow-2xl hover:-translate-y-1 transition-all duration-500 bg-[#283324] aspect-[4/5] flex flex-col justify-end">
 
                     {{-- Category Image --}}
@@ -62,8 +62,8 @@
         
         {{-- See all button --}}
         <div class="mt-16 text-center">
-            <a href="#" class="inline-flex items-center justify-center px-8 py-4 border border-[#283324]/20 text-base font-medium rounded-full text-[#283324] hover:bg-[#283324] hover:text-white transition-all duration-300 shadow-sm">
-                Voir toutes les catégories
+            <a href="{{ route('products.index') }}" class="inline-flex items-center justify-center px-8 py-4 border border-[#283324]/20 text-base font-medium rounded-full text-[#283324] hover:bg-[#283324] hover:text-white transition-all duration-300 shadow-sm">
+                Voir tous les produits
             </a>
         </div>
     </div>

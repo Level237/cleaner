@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\View;
 
 class ProductController extends Controller
 {
@@ -20,6 +21,8 @@ class ProductController extends Controller
         }
         
         $products = $query->paginate(12)->withQueryString();
+
+        View::share('seoTitle', 'Boutique — Tous nos thés bien-être & accessoires | ' . config('app.name'));
         
         return view('products.index', compact('products', 'categories'));
     }
@@ -30,6 +33,8 @@ class ProductController extends Controller
             ->where('slug', $slug)
             ->published()
             ->firstOrFail();
+
+        View::share('seoModel', $product);
 
         return view('products.show', compact('product'));
     }

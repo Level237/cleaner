@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\View;
 
 class HomeController extends Controller
 {
@@ -13,6 +14,8 @@ class HomeController extends Controller
      */
     public function index()
     {
+        View::share('seoTitle', config('app.name') . ' — Thés bien-être détox, minceur & énergie');
+
         // Fetch categories with their main image for the categories section
         $featuredCategories = Category::with('mainImage')->get();
         
