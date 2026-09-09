@@ -1,4 +1,4 @@
-<section class="bg-[#1a2217] text-white border-t border-b border-white/5 relative z-20 overflow-hidden py-3.5 lg:py-6" aria-label="Nos engagements">
+<section class="bg-[#1a2217] mt-[-10px] text-white border-t border-b border-white/5 relative z-20 overflow-hidden py-3.5 lg:py-6" aria-label="Nos engagements">
     <style>
         @keyframes trustMarquee {
             0% { transform: translate3d(0, 0, 0); }
@@ -82,7 +82,7 @@
                             <path d="M48 0C21.5 0 0 21.5 0 48V368c0 26.5 21.5 48 48 48H64c0 53 43 96 96 96s96-43 96-96H384c0 53 43 96 96 96s96-43 96-96h32c17.7 0 32-14.3 32-32s-14.3-32-32-32V288 256 237.3c0-17-6.7-33.3-18.7-45.3L512 114.7c-12-12-28.3-18.7-45.3-18.7H416V48c0-26.5-21.5-48-48-48H48zM416 160h50.7L544 237.3V256H416V160zM112 416a32 32 0 1 1 64 0 32 32 0 1 1 -64 0zm368-32a32 32 0 1 1 0 64 32 32 0 1 1 0-64z"/>
                         </svg>
                     </div>
-                    <span class="text-xs font-medium tracking-wide text-gray-200 whitespace-nowrap">Livraison express partout & offerte dès 39 €</span>
+                    <span class="text-xs font-medium tracking-wide text-gray-200 whitespace-nowrap">Livraison express partout</span>
                 </div>
 
                 <span class="text-white/20 text-xs">•</span>
@@ -127,7 +127,7 @@
     </div>
 
     <!-- Desktop: Clean 4-Column Grid -->
-    <div class="hidden lg:block max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="hidden lg:block max-w-7xl mx-auto  px-4 sm:px-6 lg:px-8">
         <div class="grid grid-cols-4 gap-6 text-center text-sm font-medium">
             <!-- Delivery -->
             <div class="flex items-center justify-center gap-3 group">
@@ -136,7 +136,7 @@
                         <path d="M48 0C21.5 0 0 21.5 0 48V368c0 26.5 21.5 48 48 48H64c0 53 43 96 96 96s96-43 96-96H384c0 53 43 96 96 96s96-43 96-96h32c17.7 0 32-14.3 32-32s-14.3-32-32-32V288 256 237.3c0-17-6.7-33.3-18.7-45.3L512 114.7c-12-12-28.3-18.7-45.3-18.7H416V48c0-26.5-21.5-48-48-48H48zM416 160h50.7L544 237.3V256H416V160zM112 416a32 32 0 1 1 64 0 32 32 0 1 1 -64 0zm368-32a32 32 0 1 1 0 64 32 32 0 1 1 0-64z"/>
                     </svg>
                 </div>
-                <span class="tracking-wide text-gray-200">Livraison express partout & offerte dès 39 €</span>
+                <span class="tracking-wide text-gray-200">Livraison express partout</span>
             </div>
 
             <!-- Plants -->

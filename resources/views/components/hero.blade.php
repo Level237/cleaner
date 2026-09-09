@@ -14,7 +14,7 @@
             
             <!-- Left: Content (Vertically centered) -->
             <div class="w-full lg:w-1/2 flex flex-col justify-center text-center lg:text-left lg:py-24">
-                <h1 class="text-4xl sm:text-5xl md:text-6xl lg:text-[3.9rem] text-[#F8F9F5] leading-[1.15]">
+                <h1 class="text-4xl sm:text-5xl md:text-6xl mt-24 max-sm:mt-12 lg:text-[3.9rem] text-[#F8F9F5] leading-[1.15]">
                     Le thé qui fait du bien à <span class="text-[#d4f977]">votre corps.</span>
                 </h1>
                 <p class="mt-4 sm:mt-6 text-sm sm:text-base md:text-lg text-gray-200 max-w-xl mx-auto lg:mx-0 leading-relaxed font-light">
@@ -40,7 +40,7 @@
             </div>
 
             <!-- Right: Image (Hidden on mobile, displayed on desktop/laptop) -->
-            <div class="hidden lg:flex lg:w-1/2 justify-center items-end relative">
+            <div class="hidden lg:flex mt-20 lg:w-1/2 justify-center items-end relative">
                 <img src="{{ asset('assets/hero1.png') }}" alt="Thé bien-être" class="w-full max-w-lg xl:max-w-xl object-contain object-bottom drop-shadow-2xl relative z-10 animate-fade-in-up">
             </div>
 

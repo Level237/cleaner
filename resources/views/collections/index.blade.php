@@ -2,20 +2,23 @@
 
 @section('content')
 <!-- Hero Section Collections -->
-<div class="relative w-full bg-[#d4f977] pt-32  pb-24 flex items-center justify-center">
+<div class="relative w-full bg-[#1a2217] pt-32 sm:pt-40 pb-20 sm:pb-24 flex items-center justify-center overflow-hidden">
     <div class="relative z-20 text-center px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto">
-        <h1 class="text-4xl md:text-5xl lg:text-6xl font-serif font-extrabold text-[#1a2217] mb-6">Nos collections</h1>
-        <div class="w-16 h-1 bg-[#1a2217] mx-auto rounded-full"></div>
+        <span class="inline-block text-[#d4f977] font-medium text-xs sm:text-sm uppercase tracking-[0.2em] mb-3">
+            Gamme Exclusives
+        </span>
+        <h1 class="text-3xl sm:text-5xl lg:text-6xl font-serif font-medium text-white mb-4 sm:mb-6 leading-tight">Nos Collections</h1>
+        <div class="w-16 h-1 bg-[#d4f977] mx-auto rounded-full"></div>
     </div>
 </div>
 
-<div class="bg-[#F8F9F5] py-24 min-h-screen">
+<div class="bg-[#F8F9F5] py-12 sm:py-20 lg:py-24 min-h-screen">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
             @forelse($collections as $collection)
-                <a href="{{ route('collections.show', $collection->slug) }}" class="block bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden group cursor-pointer hover:shadow-md transition-shadow">
-                    <div class="aspect-w-16 aspect-h-10 bg-gray-100 relative overflow-hidden">
+                <a href="{{ route('collections.show', $collection->slug) }}" class="block bg-white rounded-2xl sm:rounded-3xl shadow-sm border border-gray-100 overflow-hidden group cursor-pointer hover:shadow-md transition-all duration-300">
+                    <div class="aspect-[16/10] bg-gray-100 relative overflow-hidden">
                         @if($collection->mainImage->first())
                             <img src="{{ asset('storage/' . $collection->mainImage->first()->path) }}" alt="{{ $collection->name }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
                         @else
@@ -24,10 +27,10 @@
                             </div>
                         @endif
                     </div>
-                    <div class="p-6">
-                        <h2 class="text-xl font-bold text-[#1a2217] mb-2">{{ $collection->name }}</h2>
-                        <p class="text-gray-500 text-sm line-clamp-3">{{ $collection->description }}</p>
-                        <div class="mt-4 flex items-center text-[#3ab54a] font-medium text-sm group-hover:text-[#283324] transition-colors">
+                    <div class="p-5 sm:p-6">
+                        <h2 class="text-lg sm:text-xl font-serif font-semibold text-[#1a2217] mb-2">{{ $collection->name }}</h2>
+                        <p class="text-gray-500 text-xs sm:text-sm font-normal line-clamp-3 leading-relaxed">{{ $collection->description }}</p>
+                        <div class="mt-4 flex items-center text-[#3ab54a] font-medium text-xs sm:text-sm group-hover:text-[#283324] transition-colors">
                             Explorer la collection
                             <svg class="w-4 h-4 ml-1 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
                         </div>
@@ -35,7 +38,7 @@
                 </a>
             @empty
                 <div class="col-span-full text-center py-12">
-                    <p class="text-gray-500 text-lg">Aucune collection disponible pour le moment.</p>
+                    <p class="text-gray-500 text-base sm:text-lg">Aucune collection disponible pour le moment.</p>
                 </div>
             @endforelse
         </div>
