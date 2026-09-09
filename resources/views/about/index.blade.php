@@ -180,29 +180,7 @@
     </div>
 </section>
 
-<!-- Section 7 : Chiffres Clés -->
-<section class="py-12 sm:py-20 bg-white border-b border-gray-100">
-    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-8 text-center">
-            <div class="p-4 sm:p-6 bg-gray-50 sm:bg-transparent rounded-2xl sm:rounded-none">
-                <span class="text-2xl sm:text-5xl font-serif font-semibold text-[#1a2217] block mb-1 sm:mb-2">+50 000</span>
-                <span class="text-[10px] sm:text-xs text-gray-500 font-medium uppercase tracking-wider">Tasses dégustées</span>
-            </div>
-            <div class="p-4 sm:p-6 bg-gray-50 sm:bg-transparent rounded-2xl sm:rounded-none">
-                <span class="text-2xl sm:text-5xl font-serif font-semibold text-[#3ab54a] block mb-1 sm:mb-2">100%</span>
-                <span class="text-[10px] sm:text-xs text-gray-500 font-medium uppercase tracking-wider">Lots de récolte tracés</span>
-            </div>
-            <div class="p-4 sm:p-6 bg-gray-50 sm:bg-transparent rounded-2xl sm:rounded-none">
-                <span class="text-2xl sm:text-5xl font-serif font-semibold text-[#1a2217] block mb-1 sm:mb-2">ISO 22000</span>
-                <span class="text-[10px] sm:text-xs text-gray-500 font-medium uppercase tracking-wider">Standard de sécurité</span>
-            </div>
-            <div class="p-4 sm:p-6 bg-gray-50 sm:bg-transparent rounded-2xl sm:rounded-none">
-                <span class="text-2xl sm:text-5xl font-serif font-semibold text-[#3ab54a] block mb-1 sm:mb-2">98%</span>
-                <span class="text-[10px] sm:text-xs text-gray-500 font-medium uppercase tracking-wider">Clients satisfaits</span>
-            </div>
-        </div>
-    </div>
-</section>
+
 
 <!-- Section 8 : CTA Final -->
 <section class="py-14 sm:py-28 bg-[#F8F9F5] text-center">

@@ -25,6 +25,8 @@
         
         <x-footer />
 
+        <!-- Floating WhatsApp Live Chat Widget -->
+        <x-whatsapp-widget />
 
     @stack('scripts')
 </body>

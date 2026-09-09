@@ -40,6 +40,40 @@
             
             <!-- Informations de contact -->
             <div class="lg:col-span-4 space-y-6">
+                <!-- Carte WhatsApp Live Assistance -->
+                <div class="bg-gradient-to-br from-[#f4fbf5] via-[#eaf8ec] to-[#e4f5e7] p-5 sm:p-7 rounded-2xl sm:rounded-3xl border border-[#25D366]/30 shadow-sm relative overflow-hidden">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-2xl bg-[#25D366] text-white flex items-center justify-center shadow-sm shrink-0">
+                                <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.205 1.624zm6.095-4.225l.394.234c1.47.872 3.161 1.333 4.887 1.334 5.158 0 9.356-4.198 9.359-9.359.001-2.5-.972-4.85-2.741-6.62-1.769-1.769-4.118-2.743-6.62-2.743-5.159 0-9.357 4.198-9.359 9.358-.001 1.792.511 3.535 1.482 5.053l.257.401-1.001 3.655 3.743-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
+                            </div>
+                            <div>
+                                <h3 class="font-serif font-medium text-[#1a2217] text-sm sm:text-base">Assistance WhatsApp</h3>
+                                <div class="flex items-center gap-1.5 mt-0.5">
+                                    <span class="relative flex h-2 w-2">
+                                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                                        <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                                    </span>
+                                    <span class="text-[11px] font-semibold text-emerald-700 uppercase tracking-wider">Conseillers en ligne</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <p class="text-xs sm:text-sm text-gray-600 font-normal leading-relaxed mb-4">
+                        Une question sur nos infusions ou le suivi de votre commande ? Discutez en direct avec notre équipe pour un conseil personnalisé.
+                    </p>
+
+                    <a href="https://wa.me/237682826160?text=Bonjour%20Cleaner%20Tea%2C%20j%27aimerais%20avoir%20des%20informations%20sur..." 
+                       target="_blank" 
+                       rel="noopener noreferrer" 
+                       class="w-full inline-flex items-center justify-center px-4 py-3 sm:py-3.5 bg-[#25D366] hover:bg-[#20ba5a] text-white font-semibold text-xs sm:text-sm rounded-xl transition-all shadow-sm gap-2 active:scale-[0.98]">
+                        <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.205 1.624zm6.095-4.225l.394.234c1.47.872 3.161 1.333 4.887 1.334 5.158 0 9.356-4.198 9.359-9.359.001-2.5-.972-4.85-2.741-6.62-1.769-1.769-4.118-2.743-6.62-2.743-5.159 0-9.357 4.198-9.359 9.358-.001 1.792.511 3.535 1.482 5.053l.257.401-1.001 3.655 3.743-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
+                        <span>Discuter sur WhatsApp</span>
+                    </a>
+                    <p class="text-[11px] text-emerald-800 text-center mt-2.5 font-medium">Réponse rapide assurée (< 15 min)</p>
+                </div>
+
                 <div class="bg-white p-5 sm:p-8 rounded-2xl sm:rounded-3xl shadow-sm border border-gray-100 space-y-6 sm:space-y-8">
                     <div>
                         <h2 class="text-xl sm:text-2xl font-serif font-semibold text-[#1a2217] mb-1 sm:mb-2">Nos Coordonnées</h2>
@@ -53,7 +87,7 @@
                             </div>
                             <div>
                                 <h3 class="font-semibold text-[#1a2217] text-xs sm:text-sm uppercase tracking-wide">Adresse</h3>
-                                <p class="text-gray-600 text-xs sm:text-sm mt-0.5 sm:mt-1 font-normal">Douala, Cameroun<br>Akwa, Boulevard de la Liberté</p>
+                                <p class="text-gray-600 text-xs sm:text-sm mt-0.5 sm:mt-1 font-normal">Douala, Cameroun<br>Akwa, Ancien 3ième</p>
                             </div>
                         </div>
 
@@ -63,7 +97,7 @@
                             </div>
                             <div>
                                 <h3 class="font-semibold text-[#1a2217] text-xs sm:text-sm uppercase tracking-wide">Téléphone</h3>
-                                <p class="text-gray-600 text-xs sm:text-sm mt-0.5 sm:mt-1 font-normal">+237 6 00 00 00 00</p>
+                                <p class="text-gray-600 text-xs sm:text-sm mt-0.5 sm:mt-1 font-normal">+237 6 82 82 61 60</p>
                             </div>
                         </div>
 
