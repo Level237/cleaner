@@ -14,6 +14,7 @@
             <img src="{{ asset('storage/' . $image->path) }}"
                  alt="{{ $image->alt_text ?? $product->name }}"
                  loading="lazy"
+                 decoding="async"
                  class="w-full h-full object-cover transition-transform duration-700 ">
         @else
             <!-- Fallback Image -->

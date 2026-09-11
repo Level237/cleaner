@@ -41,7 +41,7 @@
 
             <!-- Right: Image (Hidden on mobile, displayed on desktop/laptop) -->
             <div class="hidden lg:flex mt-20 lg:w-1/2 justify-center items-end relative">
-                <img src="{{ asset('assets/hero1.png') }}" alt="Thé bien-être" class="w-full max-w-lg xl:max-w-xl object-contain object-bottom drop-shadow-2xl relative z-10 animate-fade-in-up">
+                <img src="{{ asset('assets/hero1.png') }}" alt="Thé bien-être" width="600" height="600" fetchpriority="high" decoding="async" class="w-full max-w-lg xl:max-w-xl object-contain object-bottom drop-shadow-2xl relative z-10 animate-fade-in-up">
             </div>
 
         </div>

@@ -7,7 +7,7 @@
             {{-- Column 1: Brand & Details --}}
             <div class="sm:col-span-2 lg:col-span-2">
                 <a href="{{ url('/') }}" class="inline-block mb-3 sm:mb-4">
-                    <img src="{{ asset('assets/logo.png') }}" alt="Cleaner Logo" class="h-20 sm:h-24 w-auto object-contain opacity-90">
+                    <img src="{{ asset('assets/logo.png') }}" alt="Cleaner Logo" width="160" height="96" loading="lazy" decoding="async" class="h-20 sm:h-24 w-auto object-contain opacity-90">
                 </a>
                 <p class="text-xs sm:text-sm text-[#1a2217]/80 leading-relaxed max-w-sm font-normal">
                     Cleaner vous accompagne vers un bien-être naturel. Découvrez nos infusions détox, minceur et énergie à base de plantes rigoureusement sélectionnées.

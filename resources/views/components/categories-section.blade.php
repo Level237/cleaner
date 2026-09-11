@@ -32,6 +32,7 @@
                         <img src="{{ asset('storage/' . $image->path) }}"
                              alt="{{ $image->alt_text ?? $category->name }}"
                              loading="lazy"
+                             decoding="async"
                              class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-90 group-hover:opacity-100">
                     @else
                         <!-- Fallback Pattern -->

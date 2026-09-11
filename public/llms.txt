@@ -1,0 +1,21 @@
+# Cleaner — Maison de Thés Bien-être
+
+> Cleaner est une maison française d'exception spécialisée dans les thés bien-être, mélanges détox, infusions minceur, énergie et relaxation 100% naturelles.
+
+## Navigation Agentic & Fichiers Markdown
+
+- [Accueil & Présentation](/llms/index) : Présentation générale de la marque et meilleures ventes.
+- [Boutique & Catalogues](/llms/boutique) : Liste complète de tous nos thés, tarifs, ingrédients et disponibilités.
+- [Nos Collections](/llms/collections) : Collections thématiques (Détox, Ventre Plat, Énergie, Relaxation).
+- [Notre Maison](/llms/notre-maison) : Histoire, sélection des plantes 100% naturelles et engagements qualité.
+- [Foire Aux Questions (FAQ)](/llms/faq) : Réponses sur la préparation, l'infusion, la livraison et les moyens de paiement.
+- [Contact & Assistance](/llms/contact) : Support client, e-mail et assistance en direct par WhatsApp.
+
+## Fichier d'indexation complet
+
+- [llms-full.txt](/llms-full.txt) : Version complète agrégée en Markdown brut.
+
+## Informations Produit & Marque
+- Langue principale : Français (fr)
+- Ingrédients : 100 % naturels, sans additifs ni arômes artificiels
+- Livraison : Offerte à partir de 50 €

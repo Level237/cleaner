@@ -28,6 +28,19 @@ Route::post('/contact', [\App\Http\Controllers\ContactController::class, 'store'
 Route::get('/notre-maison', [\App\Http\Controllers\AboutController::class, 'index'])->name('about');
 Route::get('/faq', [\App\Http\Controllers\FaqController::class, 'index'])->name('faq');
 
+// Agentic / LLM Navigation Routes
+Route::get('/llms-full.txt', [\App\Http\Controllers\AgenticController::class, 'llmsFull'])->name('agentic.llms-full');
+Route::prefix('llms')->name('agentic.')->group(function () {
+    Route::get('/index', [\App\Http\Controllers\AgenticController::class, 'index'])->name('index');
+    Route::get('/boutique', [\App\Http\Controllers\AgenticController::class, 'boutique'])->name('boutique');
+    Route::get('/produits/{slug}', [\App\Http\Controllers\AgenticController::class, 'product'])->name('product');
+    Route::get('/collections', [\App\Http\Controllers\AgenticController::class, 'collections'])->name('collections');
+    Route::get('/collections/{slug}', [\App\Http\Controllers\AgenticController::class, 'collection'])->name('collection');
+    Route::get('/notre-maison', [\App\Http\Controllers\AgenticController::class, 'about'])->name('about');
+    Route::get('/faq', [\App\Http\Controllers\AgenticController::class, 'faq'])->name('faq');
+    Route::get('/contact', [\App\Http\Controllers\AgenticController::class, 'contact'])->name('contact');
+});
+
 
 
 use App\Http\Controllers\Admin\CategoryController;
