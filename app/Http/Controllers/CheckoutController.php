@@ -10,6 +10,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\View;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\OrderConfirmationMail;
+use App\Mail\NewOrderAdminMail;
 
 class CheckoutController extends Controller
 {
@@ -145,6 +148,23 @@ class CheckoutController extends Controller
 
             // Vider le panier
             session()->forget('cart');
+
+            // 1. Envoi de l'e-mail de confirmation au client
+            try {
+                Mail::to($order->email)->send(new OrderConfirmationMail($order));
+            } catch (\Exception $e) {
+                \Illuminate\Support\Facades\Log::error('Erreur envoi mail client: ' . $e->getMessage());
+            }
+
+            // 2. Envoi de l'alerte à l'administrateur
+            try {
+                $adminEmail = config('mail.admin_order_email', config('mail.from.address', 'contact@cleaner.com'));
+                if ($adminEmail) {
+                    Mail::to($adminEmail)->send(new NewOrderAdminMail($order));
+                }
+            } catch (\Exception $e) {
+                \Illuminate\Support\Facades\Log::error('Erreur envoi mail admin: ' . $e->getMessage());
+            }
 
             return redirect()->route('checkout.success', $order->reference);
 

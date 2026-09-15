@@ -12,7 +12,7 @@
                 Détox, énergie, légèreté : trouvez le thé qu'il vous faut
             </h2>
             <p class="mt-3 sm:mt-6 text-sm sm:text-lg text-gray-600 font-normal leading-relaxed">
-                Chaque recette Mondays répond à un objectif bien-être précis.
+                Chaque recette Cleaner répond à un objectif bien-être précis.
                 Choisissez le vôtre et laissez la magie des plantes opérer.
             </p>
         </div>

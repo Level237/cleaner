@@ -13,7 +13,7 @@
                     Cleaner vous accompagne vers un bien-être naturel. Découvrez nos infusions détox, minceur et énergie à base de plantes rigoureusement sélectionnées.
                 </p>
                 <div class="mt-4 sm:mt-6 flex flex-col gap-1.5 text-xs sm:text-sm font-semibold text-[#1a2217]">
-                    <a href="mailto:contact@cleaner.fr" class="hover:text-[#435b39] transition-colors">contact@cleaner.fr</a>
+                    <a href="mailto:contact@cleaner-health.com" class="hover:text-[#435b39] transition-colors">contact@cleaner-health.com</a>
                     <span class="text-xs font-normal text-[#1a2217]/70">Du lundi au vendredi, 9h - 18h</span>
                 </div>
             </div>

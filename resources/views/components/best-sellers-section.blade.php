@@ -19,7 +19,7 @@
                 </h2>
                 <p class="mt-3 sm:mt-4 text-sm sm:text-lg text-gray-600 font-normal leading-relaxed">
                     Des milliers de tasses infusées chaque jour : voici les recettes
-                    préférées de la communauté Mondays.
+                    préférées de la communauté Cleaner.
                 </p>
             </div>
 

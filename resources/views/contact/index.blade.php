@@ -177,6 +177,26 @@
 
         </div>
 
+        <!-- Carte / Map Section -->
+        <div class="mt-16 sm:mt-20">
+            <div class="text-center mb-8">
+                <h2 class="text-2xl sm:text-3xl font-serif font-semibold text-[#1a2217]">Où nous trouver ?</h2>
+                <p class="text-gray-500 mt-2 text-sm sm:text-base">Akwa, Ancien 3ième, Douala, Cameroun</p>
+            </div>
+            <div class="w-full h-80 sm:h-96 md:h-[450px] bg-gray-200 rounded-2xl sm:rounded-3xl overflow-hidden shadow-sm border border-gray-100 relative">
+                <iframe 
+                    src="https://maps.google.com/maps?q=Akwa%20ancien%203ieme,%20Douala,%20Cameroun&t=&z=15&ie=UTF8&iwloc=&output=embed" 
+                    width="100%" 
+                    height="100%" 
+                    style="border:0;" 
+                    allowfullscreen="" 
+                    loading="lazy" 
+                    referrerpolicy="no-referrer-when-downgrade"
+                    class="absolute inset-0">
+                </iframe>
+            </div>
+        </div>
+
     </div>
 </div>
 @endsection
