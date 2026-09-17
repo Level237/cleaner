@@ -7,7 +7,7 @@
         <p class="text-gray-500 mb-8 text-base">Veuillez entrer vos identifiants pour vous connecter.</p>
     </div>
 
-    <form method="POST" action="{{ route('admin.login') }}" class="space-y-5">
+    <form method="POST" action="{{ route('login') }}" class="space-y-5">
         @csrf
 
         <!-- Email Address -->
@@ -51,6 +51,15 @@
             <label for="remember_me" class="ml-2 block text-sm font-medium text-gray-600 cursor-pointer">
                 Se souvenir de moi
             </label>
+        </div>
+
+        <!-- Cloudflare Turnstile Captcha -->
+        <div class="pt-2">
+            <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+            <div class="cf-turnstile" data-sitekey="{{ config('services.turnstile.key') }}" data-theme="light"></div>
+            @error('cf-turnstile-response')
+                <span class="text-red-500 text-sm font-medium mt-1 block">{{ $message }}</span>
+            @enderror
         </div>
 
         <div class="pt-4">
